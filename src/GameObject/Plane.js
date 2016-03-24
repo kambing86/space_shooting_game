@@ -11,7 +11,7 @@ function Plane(texture) {
   PIXI.Sprite.call(that, texture);
 
   var stopped = true;
-  var speed = 5;
+  var speed = 500;
   var moveToPosition = null;
 
   var isDown = false;
@@ -24,7 +24,7 @@ function Plane(texture) {
 
   function onDown(event) {
     isDown = true;
-    moveTo(event.data.local);
+    moveToPosition = event.data.local;
   }
 
   function onUp() {
@@ -33,11 +33,7 @@ function Plane(texture) {
   }
 
   function onMove(event) {
-    if (isDown) moveTo(event.data.local);
-  }
-
-  function moveTo(position) {
-    moveToPosition = position;
+    if (isDown) moveToPosition = event.data.local;
   }
 
   function spawn() {
@@ -59,12 +55,11 @@ function Plane(texture) {
     }), 0);
     timeline.add(TweenMax.to(that, 1, {
       y: y3,
-      delay: 0.5,
       onComplete: function() {
         stopped = false;
         Global.gameEvent.emit('spawn');
       }
-    }), 0);
+    }), 0.5);
   }
 
   that.init = function() {
@@ -94,7 +89,7 @@ function Plane(texture) {
     if (stopped) return;
     if (moveToPosition && that.x != moveToPosition.x) {
       var moveToX = moveToPosition.x;
-      var distance = Math.min(speed * dt * 0.1, Math.abs(moveToX - that.x));
+      var distance = Math.min(speed * dt, Math.abs(moveToX - that.x));
       that.x += (that.x < moveToX) ? distance : -distance;
       if (that.x > that.maxX)
         that.x = that.maxX;

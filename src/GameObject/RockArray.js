@@ -14,6 +14,7 @@ function RockArray() {
   PIXI.Container.call(that);
 
   var rockName = [Assets.rock1.name, Assets.rock2.name];
+  var totalNames = rockName.length;
   var rocks = {};
   var updates = [];
 
@@ -23,18 +24,17 @@ function RockArray() {
 
   function generateRocks() {
     var currentTime = Date.now();
-    if (lastFire && currentTime - lastFire < 1000 / rocksPerSecond)
+    if (stopped ||
+      updates.length > totalNames * count ||
+      (lastFire && currentTime - lastFire < 1000 / rocksPerSecond))
       return;
-    if (updates.length > 2 * count)
-      return;
-    if (stopped) return;
     lastFire = currentTime;
-    var name = rockName[Math.floor(Math.random() * 2)];
+    var name = rockName[Math.floor(Math.random() * totalNames)];
     var rock;
     while (!rock) {
       rock = rocks[name].pop();
       if (!rock) {
-        name = (name + 1) % rockName.length;
+        name = (name + 1) % totalNames;
         return;
       }
       rock.refresh();
@@ -45,9 +45,9 @@ function RockArray() {
 
   that.init = function() {
     var resources = PIXI.loader.resources;
-    var i, name, texture, array, rock;
-    for (var n = 0, c = rockName.length; n < c; n++) {
-      name = rockName[n];
+    var i, j, name, texture, array, rock;
+    for (j = 0; j < totalNames; j++) {
+      name = rockName[j];
       texture = resources[name].texture;
       array = rocks[name] = [];
       for (i = 0; i < count; i++) {
@@ -56,10 +56,10 @@ function RockArray() {
         array.push(rock);
       }
     }
-    Global.gameEvent.on('spawn', function(){
+    Global.gameEvent.on('spawn', function() {
       stopped = false;
     });
-    Global.gameEvent.on('dead', function(){
+    Global.gameEvent.on('dead', function() {
       stopped = true;
     });
   };

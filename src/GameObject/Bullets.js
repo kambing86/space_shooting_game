@@ -7,7 +7,6 @@ const Collision = require('../Collision');
 function Bullets(texture) {
   var that = this;
   var count = 20;
-  var _texture = texture;
 
   PIXI.Container.call(that);
 
@@ -16,7 +15,7 @@ function Bullets(texture) {
 
   var lastFire = null;
   var firePerSecond = 10;
-  var speed = 10;
+  var speed = 1000;
 
   function shoot(x, y) {
     var currentTime = Date.now();
@@ -31,7 +30,7 @@ function Bullets(texture) {
 
   that.init = function() {
     for (var i = 0; i < count; i++) {
-      var bullet = new PIXI.Sprite(_texture);
+      var bullet = new PIXI.Sprite(texture);
       bullet.anchor.x = bullet.anchor.y = 0.5;
       bullets.push(bullet);
       Collision.addGroup(bullet, 'bullet');
@@ -42,7 +41,7 @@ function Bullets(texture) {
   that.update = function(dt) {
     for (var i = 0, l = updates.length; i < l; i++) {
       var bullet = updates[i];
-      bullet.y -= speed * dt * 0.1;
+      bullet.y -= speed * dt;
       if (bullet.y < -bullet.height || !bullet.parent) {
         that.removeChild(bullet);
         bullets.push(bullet);

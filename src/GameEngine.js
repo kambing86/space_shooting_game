@@ -10,11 +10,10 @@ const RockArray = require('./GameObject/RockArray');
 const Score = require('./UI/Score');
 const Level = require('./UI/Level');
 
-function GameEngine(gameStage) {
+function GameEngine(stage) {
   var that = this;
-  var stage = gameStage;
 
-  var time = Date.now();
+  var lastTick = Date.now();
   var gameObjectList = [];
   var currentScore = 0;
   var currentLevel = 1;
@@ -83,10 +82,10 @@ function GameEngine(gameStage) {
 
   that.update = function() {
     var currentTime = Date.now();
-    var delta = currentTime - time;
+    var delta = (currentTime - lastTick) * 0.001;
     for (var i = 0, l = gameObjectList.length; i < l; i++)
       gameObjectList[i].update(delta);
-    time = currentTime;
+    lastTick = currentTime;
   };
 }
 module.exports = GameEngine;

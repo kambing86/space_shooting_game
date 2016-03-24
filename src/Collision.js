@@ -28,7 +28,7 @@ var Collision = {
       targetHeight = target.height;
       x2 = target.x + (0.5 - target.anchor.x) * targetWidth;
       y2 = target.y + (0.5 - target.anchor.y) * targetHeight;
-      if (Math.abs(x1 - x2) < (instanceWidth + targetWidth) * 0.5 && Math.abs(y1 - y2) < (instanceHeight + targetHeight) * 0.5)
+      if (Math.abs(x1 - x2) < (instanceWidth + targetWidth) / 2 && Math.abs(y1 - y2) < (instanceHeight + targetHeight) / 2)
         return target;
     }
     return null;
