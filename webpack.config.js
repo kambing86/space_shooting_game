@@ -36,13 +36,17 @@ module.exports = {
   externals: {
     "$": "$",
     "Howl": "Howl",
-    "PIXI": "PIXI"
+    "PIXI": "PIXI",
+    "TweenMax": "TweenMax",
+    "TimelineMax": "TimelineMax"
   },
   plugins: [
     new webpack.ProvidePlugin({
       "$": "$",
       "Howl": "Howl",
-      "PIXI": "PIXI"
+      "PIXI": "PIXI",
+      "TweenMax": "TweenMax",
+      "TimelineMax": "TimelineMax"
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {

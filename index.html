@@ -12,16 +12,34 @@
       height: 100%;
       overflow: hidden;
     }
+
+    .ui-font {
+      position: absolute;
+      color: #fff;
+      pointer-events: none;
+      font-size: 5vh;
+    }
+
+    .scoreDiv, .levelDiv {
+      top: 0;
+    }
+
+    .levelDiv {
+      text-align: right;
+    }
   </style>
 </head>
 
 <body>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/pixi.js/bin/pixi.min.js"></script>
+  <script src="bower_components/gsap/src/minified/TweenMax.min.js"></script>
   <!-- <script src="bower_components/howler.js/howler.min.js"></script> -->
   <!-- <script src="bower_components/PreloadJS/lib/preloadjs-0.6.2.min.js"></script> -->
   <script src="bin/bundle.js"></script>
   <canvas id="canvas"></canvas>
+  <div class="ui-font scoreDiv">Score:<span> 0</span></div>
+  <div class="ui-font levelDiv">Level:<span> 1</span></div>
 </body>
 
 </html>

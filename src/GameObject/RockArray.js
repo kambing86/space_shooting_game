@@ -1,11 +1,15 @@
+const PIXI = require('PIXI');
+
 const Global = require('../Global');
 const Extends = require('../util/extends');
 const Assets = require('./Assets');
 const Rock = require('./Rock');
 
+var gameHeight = Global.gameHeight;
+
 function RockArray() {
   var that = this;
-  var count = 5;
+  var count = 40;
 
   PIXI.Container.call(that);
 
@@ -13,10 +17,9 @@ function RockArray() {
   var rocks = {};
   var updates = [];
 
-  var gameWidth = Global.gameWidth;
-
+  var stopped = true;
   var lastFire = null;
-  var rocksPerSecond = 1;
+  var rocksPerSecond = 2;
 
   function generateRocks() {
     var currentTime = Date.now();
@@ -24,6 +27,7 @@ function RockArray() {
       return;
     if (updates.length > 2 * count)
       return;
+    if (stopped) return;
     lastFire = currentTime;
     var name = rockName[Math.floor(Math.random() * 2)];
     var rock;
@@ -33,8 +37,7 @@ function RockArray() {
         name = (name + 1) % rockName.length;
         return;
       }
-      rock.x = gameWidth * 0.25 + (Math.random() * Global.gameWidth) / 2;
-      rock.y = -rock.height;
+      rock.refresh();
       updates.push(rock);
       that.addChild(rock);
     }
@@ -53,12 +56,18 @@ function RockArray() {
         array.push(rock);
       }
     }
+    Global.gameEvent.on('spawn', function(){
+      stopped = false;
+    });
+    Global.gameEvent.on('dead', function(){
+      stopped = true;
+    });
   };
 
   that.update = function(dt) {
     for (var i = 0, l = updates.length; i < l; i++) {
       var rock = updates[i];
-      if (rock.parent && rock.y < Global.gameHeight + rock.height)
+      if (rock.parent && rock.y < gameHeight + rock.height)
         rock.update(dt);
       else {
         rocks[rock.name()].push(rock);
@@ -68,6 +77,10 @@ function RockArray() {
       }
     }
     generateRocks();
+  };
+
+  that.updateLevel = function(level) {
+    rocksPerSecond = level * 2;
   };
 }
 Extends(RockArray, PIXI.Container);

@@ -1,4 +1,4 @@
-const Global = require('./Global');
+// const Global = require('./Global');
 
 var groups = {};
 // var stage;

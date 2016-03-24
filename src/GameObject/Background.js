@@ -1,3 +1,5 @@
+const PIXI = require('PIXI');
+
 const Global = require('../Global');
 const Extends = require('../util/extends');
 
@@ -20,6 +22,7 @@ function Background(texture, plane) {
     that.addChild(sprite);
     var bgScale = Global.gameHeight / bgHeight;
     that.scale.x = that.scale.y = bgScale;
+    that.cacheAsBitmap = true;
     resetHeight = that.height / 2;
     movableWidth = that.width - Global.gameWidth;
   };
@@ -28,7 +31,7 @@ function Background(texture, plane) {
     that.y += speedY * dt * 0.01;
     if (that.y > resetHeight)
       that.y -= resetHeight;
-    that.x = -movableWidth * (plane.x - minX) / planeMovableWidth
+    that.x = -movableWidth * (plane.x - minX) / planeMovableWidth;
   };
 }
 Extends(Background, PIXI.Container);

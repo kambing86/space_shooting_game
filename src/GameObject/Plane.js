@@ -1,10 +1,16 @@
+const PIXI = require('PIXI');
+const TweenMax = require('TweenMax');
+const TimelineMax = require('TimelineMax');
+
 const Global = require('../Global');
 const Extends = require('../util/extends');
+const Collision = require('../Collision');
 
 function Plane(texture) {
   var that = this;
   PIXI.Sprite.call(that, texture);
 
+  var stopped = true;
   var speed = 5;
   var moveToPosition = null;
 
@@ -13,12 +19,15 @@ function Plane(texture) {
   that.maxX = Global.gameWidth - that.width / 2;
   that.minX = that.width / 2;
 
+  var timeline;
+  var deathTime;
+
   function onDown(event) {
     isDown = true;
     moveTo(event.data.local);
   }
 
-  function onUp(event) {
+  function onUp() {
     isDown = false;
     moveToPosition = null;
   }
@@ -31,10 +40,36 @@ function Plane(texture) {
     moveToPosition = position;
   }
 
+  function spawn() {
+    that.scale.x = that.scale.y = 1;
+    that.y = Global.gameHeight;
+    if (timeline) {
+      timeline.play(0);
+      return;
+    }
+    var y2 = that.y - that.height;
+    var y3 = y2 + that.height / 2;
+    timeline = new TimelineMax();
+    timeline.add(TweenMax.to(that.scale, 1.5, {
+      x: 0.5,
+      y: 0.5
+    }), 0);
+    timeline.add(TweenMax.to(that, 0.5, {
+      y: y2
+    }), 0);
+    timeline.add(TweenMax.to(that, 1, {
+      y: y3,
+      delay: 0.5,
+      onComplete: function() {
+        stopped = false;
+        Global.gameEvent.emit('spawn');
+      }
+    }), 0);
+  }
+
   that.init = function() {
     that.anchor.x = that.anchor.y = 0.5;
     that.x = Global.gameWidth / 2;
-    that.y = Global.gameHeight - that.height;
     Global.input
       .on('mousedown', onDown)
       .on('touchstart', onDown)
@@ -44,9 +79,19 @@ function Plane(texture) {
       .on('touchendoutside', onUp)
       .on('mousemove', onMove)
       .on('touchmove', onMove);
+    Collision.addGroup(that, 'plane');
+    spawn();
   };
 
   that.update = function(dt) {
+    if (!that.parent) {
+      if (Date.now() - deathTime >= 5000) {
+        Global.gameStage.addChild(that);
+        spawn();
+      } else
+        return;
+    }
+    if (stopped) return;
     if (moveToPosition && that.x != moveToPosition.x) {
       var moveToX = moveToPosition.x;
       var distance = Math.min(speed * dt * 0.1, Math.abs(moveToX - that.x));
@@ -57,7 +102,15 @@ function Plane(texture) {
         that.x = that.minX;
     }
     if (isDown)
-      Global.gameEvent.emit('shoot', that.x, that.y, dt);
+      Global.gameEvent.emit('shoot', that.x, that.y);
+    var target = Collision.isCollide(that, 'rock');
+    if (target) {
+      target.parent.removeChild(target);
+      that.parent.removeChild(that);
+      deathTime = Date.now();
+      Global.gameEvent.emit('dead');
+      stopped = true;
+    }
   };
 }
 Extends(Plane, PIXI.Sprite);

@@ -1,8 +1,14 @@
 // require('../css/app.css');
 // require('babel-polyfill');
+
+const PIXI = require('PIXI');
+
 const Global = require('./Global');
 const GameEngine = require('./GameEngine');
 const Assets = require('./GameObject/Assets');
+const Score = require('./UI/Score');
+const Level = require('./UI/Level');
+
 $(function() {
   var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, {
     view: $("canvas")[0]
@@ -13,6 +19,9 @@ $(function() {
     loader = PIXI.loader,
     gameEngine = new GameEngine(stage),
     winObject = $(window);
+
+  Score.init();
+  Level.init();
 
   Global.gameStage = stage;
   stage.mask = mask;
@@ -65,5 +74,7 @@ $(function() {
     stage.scale.x = stageWidth / gameWidth;
     stage.scale.y = stageHeight / gameHeight;
     renderer.resize(screenWidth, screenHeight);
+    Score.updatePosition(x, y);
+    Level.updatePosition(x, y, stageWidth);
   }
 });

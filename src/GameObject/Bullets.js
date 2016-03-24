@@ -1,3 +1,5 @@
+const PIXI = require('PIXI');
+
 const Global = require('../Global');
 const Extends = require('../util/extends');
 const Collision = require('../Collision');
@@ -16,7 +18,7 @@ function Bullets(texture) {
   var firePerSecond = 10;
   var speed = 10;
 
-  function shoot(x, y, dt) {
+  function shoot(x, y) {
     var currentTime = Date.now();
     if (lastFire && currentTime - lastFire < 1000 / firePerSecond) return;
     lastFire = currentTime;

@@ -1,10 +1,14 @@
+const PIXI = require('PIXI');
+
 const Global = require('./Global');
 const Assets = require('./GameObject/Assets');
 const Background = require('./GameObject/Background');
 const Plane = require('./GameObject/Plane');
 const Bullets = require('./GameObject/Bullets');
 const RockArray = require('./GameObject/RockArray');
-const Rock = require('./GameObject/Rock');
+// const Rock = require('./GameObject/Rock');
+const Score = require('./UI/Score');
+const Level = require('./UI/Level');
 
 function GameEngine(gameStage) {
   var that = this;
@@ -12,10 +16,23 @@ function GameEngine(gameStage) {
 
   var time = Date.now();
   var gameObjectList = [];
+  var currentScore = 0;
+  var currentLevel = 1;
+  var rocks;
 
   function listen(event) {
     event.data.local = stage.toLocal(event.data.global);
     Global.input.emit(event.type, event);
+  }
+
+  function addScore(score) {
+    currentScore += score;
+    Score.updateScore(currentScore);
+    if (currentLevel < 4 && currentLevel < currentScore / 500) {
+      currentLevel++;
+      Level.updateLevel(currentLevel);
+      rocks.updateLevel(currentLevel);
+    }
   }
 
   that.init = function() {
@@ -34,7 +51,7 @@ function GameEngine(gameStage) {
     stage.addChild(bullets);
     gameObjectList.push(bullets);
 
-    var rocks = new RockArray();
+    rocks = new RockArray();
     stage.addChild(rocks);
     gameObjectList.push(rocks);
 
@@ -61,6 +78,7 @@ function GameEngine(gameStage) {
       gameObjectList[i].init();
 
     Global.gameStartTime = Date.now();
+    Global.gameEvent.on('score', addScore);
   };
 
   that.update = function() {

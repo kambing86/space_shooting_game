@@ -1,7 +1,7 @@
 module.exports = {
   plane: {
     name: "plane",
-    url: "redfighter0006.png"
+    url: "redfighter.png"
   },
   bg: {
     name: "bg",
