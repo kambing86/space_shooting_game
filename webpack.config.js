@@ -35,19 +35,19 @@ module.exports = {
   },
   externals: {
     "$": "$",
-    "Howl": "Howl",
     "PIXI": "PIXI",
     "TweenMax": "TweenMax",
-    "TimelineMax": "TimelineMax"
+    "TimelineMax": "TimelineMax",
+    "SoundJS": "createjs.Sound"
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      "$": "$",
-      "Howl": "Howl",
-      "PIXI": "PIXI",
-      "TweenMax": "TweenMax",
-      "TimelineMax": "TimelineMax"
-    }),
+    // new webpack.ProvidePlugin({
+    //   "$": "$",
+    //   "PIXI": "PIXI",
+    //   "TweenMax": "TweenMax",
+    //   "TimelineMax": "TimelineMax",
+    //   "SoundJS": "createjs.SoundJS"
+    // }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false

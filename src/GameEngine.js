@@ -6,9 +6,13 @@ const Background = require('./GameObject/Background');
 const Plane = require('./GameObject/Plane');
 const Bullets = require('./GameObject/Bullets');
 const RockArray = require('./GameObject/RockArray');
-// const Rock = require('./GameObject/Rock');
+const BankArray = require('./GameObject/BankArray');
+const ExplosionSystem = require('./ExplosionSystem');
 const Score = require('./UI/Score');
 const Level = require('./UI/Level');
+
+var input = Global.Input;
+var now = Date.now;
 
 function GameEngine(stage) {
   var that = this;
@@ -18,10 +22,14 @@ function GameEngine(stage) {
   var currentScore = 0;
   var currentLevel = 1;
   var rocks;
+  var banks;
 
-  function listen(event) {
+  var bankSpawnConstant = 10000;
+  var bankTick;
+
+  function pointerListener(event) {
     event.data.local = stage.toLocal(event.data.global);
-    Global.input.emit(event.type, event);
+    input.emit(event.type, event);
   }
 
   function addScore(score) {
@@ -32,6 +40,11 @@ function GameEngine(stage) {
       Level.updateLevel(currentLevel);
       rocks.updateLevel(currentLevel);
     }
+  }
+
+  function resetScore() {
+    currentScore = 0;
+    Score.updateScore(currentScore);
   }
 
   that.init = function() {
@@ -54,37 +67,42 @@ function GameEngine(stage) {
     stage.addChild(rocks);
     gameObjectList.push(rocks);
 
-    // var rock1 = new Rock(Assets.rock1.name, resources[Assets.rock1.name].texture);
-    // stage.addChild(rock1);
-    // gameObjectList.push(rock1);
-    //
-    // var rock2 = new Rock(Assets.rock2.name, resources[Assets.rock2.name].texture);
-    // stage.addChild(rock2);
-    // gameObjectList.push(rock2);
+    banks = new BankArray();
+    stage.addChild(banks);
+    gameObjectList.push(banks);
+
+    ExplosionSystem.init(stage);
 
     stage.interactive = true;
     stage
-      .on('mousedown', listen)
-      .on('touchstart', listen)
-      .on('mouseup', listen)
-      .on('touchend', listen)
-      .on('mouseupoutside', listen)
-      .on('touchendoutside', listen)
-      .on('mousemove', listen)
-      .on('touchmove', listen);
+      .on('mousedown', pointerListener)
+      .on('touchstart', pointerListener)
+      .on('mouseup', pointerListener)
+      .on('touchend', pointerListener)
+      .on('mouseupoutside', pointerListener)
+      .on('touchendoutside', pointerListener)
+      .on('mousemove', pointerListener)
+      .on('touchmove', pointerListener);
 
     for (var i = 0, l = gameObjectList.length; i < l; i++)
       gameObjectList[i].init();
 
-    Global.gameStartTime = Date.now();
+    Global.gameStartTime = now();
     Global.gameEvent.on('score', addScore);
+    Global.gameEvent.on('resetscore', resetScore);
+
+    bankTick = now();
   };
 
   that.update = function() {
-    var currentTime = Date.now();
+    var currentTime = now();
     var delta = (currentTime - lastTick) * 0.001;
     for (var i = 0, l = gameObjectList.length; i < l; i++)
       gameObjectList[i].update(delta);
+    if (currentTime - bankTick > bankSpawnConstant) {
+      banks.spawn();
+      bankTick = currentTime;
+    }
     lastTick = currentTime;
   };
 }

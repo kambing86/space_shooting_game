@@ -18,9 +18,8 @@
   ],
   "dependencies": {
     "gsap": "^1.18.2",
-    "howler.js": "^1.1.29",
     "jquery": "^2.2.2",
     "pixi.js": "^3.0.10",
-    "PreloadJS": "^0.6.2"
+    "SoundJS": "^0.6.2"
   }
 }

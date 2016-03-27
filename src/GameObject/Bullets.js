@@ -4,6 +4,8 @@ const Global = require('../Global');
 const Extends = require('../util/extends');
 const Collision = require('../Collision');
 
+var now = Date.now;
+
 function Bullets(texture) {
   var that = this;
   var count = 20;
@@ -18,7 +20,7 @@ function Bullets(texture) {
   var speed = 1000;
 
   function shoot(x, y) {
-    var currentTime = Date.now();
+    var currentTime = now();
     if (lastFire && currentTime - lastFire < 1000 / firePerSecond) return;
     lastFire = currentTime;
     var bullet = bullets.pop();

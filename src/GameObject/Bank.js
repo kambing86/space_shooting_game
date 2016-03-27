@@ -12,26 +12,21 @@ var gameEvent = Global.gameEvent;
 var random = Math.random;
 var isCollide = Collision.isCollide;
 
-function Rock(textureName, texture) {
+function Bank(textureName, texture) {
   var that = this;
   PIXI.Sprite.call(that, texture);
 
-  if (textureName == Assets.rock1.name)
-    that.initialLife = 4;
-  else
-    that.initialLife = 1;
+  that.initialLife = 10;
 
   that.type = textureName;
-  that.isBig = textureName == Assets.rock1.name;
 
-  var speedConstant = (that.isBig) ? 2 : 4;
+  var speedConstant = 1;
 
   function refresh() {
     that.x = gameWidth / 4 + (random() * gameWidth) / 2;
     that.y = -that.height;
     that.speedX = (random() * 1 - 0.5) * 100;
     that.speedY = (1.5 + random() * speedConstant) * 100;
-    that.speedRotation = (random() * 1 - 0.5) * 10;
     that.life = that.initialLife;
   }
 
@@ -39,7 +34,6 @@ function Rock(textureName, texture) {
 
   that.init = function() {
     that.anchor.x = that.anchor.y = 0.5;
-    Collision.addGroup(that, 'rock');
     refresh();
   };
 
@@ -51,19 +45,18 @@ function Rock(textureName, texture) {
       return;
     }
     var target = isCollide(that, 'bullet');
-    that.rotation += that.speedRotation * dt;
     if (target) {
       target.parent.removeChild(target);
       that.life--;
       if (that.life > 0) return;
       that.parent.removeChild(that);
-      gameEvent.emit('explosion', that.x, that.y, that.isBig);
-      if (that.isBig)
-        gameEvent.emit('score', 10);
+      gameEvent.emit('explosion', that.x, that.y, true);
+      if (textureName == Assets.dbs.name)
+        gameEvent.emit('resetscore');
       else
-        gameEvent.emit('score', 5);
+        gameEvent.emit('score', 100);
     }
   };
 }
-Extends(Rock, PIXI.Sprite);
-module.exports = Rock;
+Extends(Bank, PIXI.Sprite);
+module.exports = Bank;

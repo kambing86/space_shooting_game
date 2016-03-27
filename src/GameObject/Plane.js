@@ -6,6 +6,15 @@ const Global = require('../Global');
 const Extends = require('../util/extends');
 const Collision = require('../Collision');
 
+var gameStage;
+var gameEvent = Global.gameEvent;
+var input = Global.Input;
+
+var now = Date.now;
+var min = Math.min;
+var abs = Math.abs;
+var isCollide = Collision.isCollide;
+
 function Plane(texture) {
   var that = this;
   PIXI.Sprite.call(that, texture);
@@ -22,17 +31,17 @@ function Plane(texture) {
   var timeline;
   var deathTime;
 
-  function onDown(event) {
+  function onPointerDown(event) {
     isDown = true;
     moveToPosition = event.data.local;
   }
 
-  function onUp() {
+  function onPointerUp() {
     isDown = false;
     moveToPosition = null;
   }
 
-  function onMove(event) {
+  function onPointerMove(event) {
     if (isDown) moveToPosition = event.data.local;
   }
 
@@ -43,67 +52,81 @@ function Plane(texture) {
       timeline.play(0);
       return;
     }
-    var y2 = that.y - that.height;
-    var y3 = y2 + that.height / 2;
+    var y1 = that.y - that.height;
+    var y2 = y1 + that.height / 2;
     timeline = new TimelineMax();
     timeline.add(TweenMax.to(that.scale, 1.5, {
       x: 0.5,
       y: 0.5
     }), 0);
     timeline.add(TweenMax.to(that, 0.5, {
-      y: y2
+      y: y1
     }), 0);
     timeline.add(TweenMax.to(that, 1, {
-      y: y3,
+      y: y2,
       onComplete: function() {
         stopped = false;
-        Global.gameEvent.emit('spawn');
+        gameEvent.emit('spawn');
       }
     }), 0.5);
   }
 
   that.init = function() {
+    gameStage = Global.gameStage;
     that.anchor.x = that.anchor.y = 0.5;
     that.x = Global.gameWidth / 2;
-    Global.input
-      .on('mousedown', onDown)
-      .on('touchstart', onDown)
-      .on('mouseup', onUp)
-      .on('touchend', onUp)
-      .on('mouseupoutside', onUp)
-      .on('touchendoutside', onUp)
-      .on('mousemove', onMove)
-      .on('touchmove', onMove);
+    input
+      .on('mousedown', onPointerDown)
+      .on('touchstart', onPointerDown)
+      .on('mouseup', onPointerUp)
+      .on('touchend', onPointerUp)
+      .on('mouseupoutside', onPointerUp)
+      .on('touchendoutside', onPointerUp)
+      .on('mousemove', onPointerMove)
+      .on('touchmove', onPointerMove);
     Collision.addGroup(that, 'plane');
     spawn();
   };
 
   that.update = function(dt) {
     if (!that.parent) {
-      if (Date.now() - deathTime >= 5000) {
-        Global.gameStage.addChild(that);
+      if (now() - deathTime >= 5000) {
+        gameStage.addChild(that);
         spawn();
       } else
         return;
     }
     if (stopped) return;
-    if (moveToPosition && that.x != moveToPosition.x) {
-      var moveToX = moveToPosition.x;
-      var distance = Math.min(speed * dt, Math.abs(moveToX - that.x));
-      that.x += (that.x < moveToX) ? distance : -distance;
-      if (that.x > that.maxX)
-        that.x = that.maxX;
-      else if (that.x < that.minX)
-        that.x = that.minX;
+    if (moveToPosition) {
+      if (that.x != moveToPosition.x) {
+        var moveToX = moveToPosition.x;
+        var distance = min(speed * dt, abs(moveToX - that.x));
+        that.x += (that.x < moveToX) ? distance : -distance;
+      }
+    } else {
+      var keyLeft = input.isDown(input.KEY_LEFT);
+      var keyRight = input.isDown(input.KEY_RIGHT);
+      if (keyLeft || keyRight)
+        that.x += (keyLeft ? -1 : 1) * speed * dt;
     }
-    if (isDown)
-      Global.gameEvent.emit('shoot', that.x, that.y);
-    var target = Collision.isCollide(that, 'rock');
+
+    //check position
+    if (that.x > that.maxX)
+      that.x = that.maxX;
+    else if (that.x < that.minX)
+      that.x = that.minX;
+
+    gameEvent.emit('shoot', that.x, that.y);
+
+    //check collision with rock
+    var target = isCollide(that, 'rock');
     if (target) {
       target.parent.removeChild(target);
       that.parent.removeChild(that);
-      deathTime = Date.now();
-      Global.gameEvent.emit('dead');
+      deathTime = now();
+      gameEvent.emit('dead');
+      gameEvent.emit('explosion', target.x, target.y, target.isBig);
+      gameEvent.emit('explosion', that.x, that.y);
       stopped = true;
     }
   };
