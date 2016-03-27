@@ -1,9 +1,4 @@
-// const Global = require('./Global');
-
 var groups = {};
-// var stage;
-// var point1 = new PIXI.Point();
-// var point2 = new PIXI.Point();
 
 var Collision = {
   addGroup: function(instance, group) {

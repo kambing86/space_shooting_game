@@ -5,10 +5,6 @@ const Extends = require('../util/extends');
 const Assets = require('./Assets');
 const Bank = require('./Bank');
 
-var gameHeight = Global.gameHeight;
-var floor = Math.floor;
-var random = Math.random;
-
 function BankArray() {
   var that = this;
   var count = 2;
@@ -21,7 +17,8 @@ function BankArray() {
   var updates = [];
 
   function spawnBank() {
-    var name = bankNames[floor(random() * totalNames)];
+    if (updates.length > totalNames * count) return;
+    var name = bankNames[Math.floor(Math.random() * totalNames)];
     var bank;
     while (!bank) {
       bank = banks[name].pop();
@@ -53,7 +50,7 @@ function BankArray() {
   that.update = function(dt) {
     for (var i = 0, l = updates.length; i < l; i++) {
       var bank = updates[i];
-      if (bank.parent && bank.y < gameHeight + bank.height)
+      if (bank.parent && bank.y < Global.gameHeight + bank.height)
         bank.update(dt);
       else {
         banks[bank.type].push(bank);

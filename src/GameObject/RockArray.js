@@ -5,11 +5,6 @@ const Extends = require('../util/extends');
 const Assets = require('./Assets');
 const Rock = require('./Rock');
 
-var gameHeight = Global.gameHeight;
-var now = Date.now;
-var floor = Math.floor;
-var random = Math.random;
-
 function RockArray() {
   var that = this;
   var count = 40;
@@ -27,13 +22,13 @@ function RockArray() {
   var rocksPerSecond = spawnConstant;
 
   function spawnRock() {
-    var currentTime = now();
+    var currentTime = Date.now();
     if (stopped ||
       updates.length > totalNames * count ||
       (lastFire && currentTime - lastFire < 1000 / rocksPerSecond))
       return;
     lastFire = currentTime;
-    var name = rockNames[floor(random() * totalNames)];
+    var name = rockNames[Math.floor(Math.random() * totalNames)];
     var rock;
     while (!rock) {
       rock = rocks[name].pop();
@@ -71,7 +66,7 @@ function RockArray() {
   that.update = function(dt) {
     for (var i = 0, l = updates.length; i < l; i++) {
       var rock = updates[i];
-      if (rock.parent && rock.y < gameHeight + rock.height)
+      if (rock.parent && rock.y < Global.gameHeight + rock.height)
         rock.update(dt);
       else {
         rocks[rock.type].push(rock);

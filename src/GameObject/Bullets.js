@@ -4,13 +4,11 @@ const Global = require('../Global');
 const Extends = require('../util/extends');
 const Collision = require('../Collision');
 
-var now = Date.now;
-
 function Bullets(texture) {
   var that = this;
-  var count = 20;
-
   PIXI.Container.call(that);
+
+  var count = 20;
 
   var bullets = [];
   var updates = [];
@@ -20,7 +18,7 @@ function Bullets(texture) {
   var speed = 1000;
 
   function shoot(x, y) {
-    var currentTime = now();
+    var currentTime = Date.now();
     if (lastFire && currentTime - lastFire < 1000 / firePerSecond) return;
     lastFire = currentTime;
     var bullet = bullets.pop();

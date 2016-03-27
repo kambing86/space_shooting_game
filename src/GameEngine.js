@@ -11,9 +11,6 @@ const ExplosionSystem = require('./ExplosionSystem');
 const Score = require('./UI/Score');
 const Level = require('./UI/Level');
 
-var input = Global.Input;
-var now = Date.now;
-
 function GameEngine(stage) {
   var that = this;
 
@@ -29,7 +26,7 @@ function GameEngine(stage) {
 
   function pointerListener(event) {
     event.data.local = stage.toLocal(event.data.global);
-    input.emit(event.type, event);
+    Global.Input.emit(event.type, event);
   }
 
   function addScore(score) {
@@ -87,15 +84,15 @@ function GameEngine(stage) {
     for (var i = 0, l = gameObjectList.length; i < l; i++)
       gameObjectList[i].init();
 
-    Global.gameStartTime = now();
+    Global.gameStartTime = Date.now();
     Global.gameEvent.on('score', addScore);
     Global.gameEvent.on('resetscore', resetScore);
 
-    bankTick = now();
+    bankTick = Date.now();
   };
 
   that.update = function() {
-    var currentTime = now();
+    var currentTime = Date.now();
     var delta = (currentTime - lastTick) * 0.001;
     for (var i = 0, l = gameObjectList.length; i < l; i++)
       gameObjectList[i].update(delta);

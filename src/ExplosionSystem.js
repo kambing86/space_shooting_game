@@ -5,19 +5,17 @@ const Assets = require('./GameObject/Assets');
 const JsonToArray = require('./util/JsonToArray');
 
 var instance = null;
-var PI = Math.PI;
-var random = Math.random;
 
 function ExplosionSystem(stage) {
-  var count = 20;
   var explosions = {};
   var types = [
     Assets.explosion1.name,
     Assets.explosion2.name
   ];
-  var totalNames = types.length;
 
   (function() {
+    var count = 20;
+    var totalNames = types.length;
     var i, j, type, textures, array, explosion;
     var resources = PIXI.loader.resources;
     for (i = 0; i < totalNames; i++) {
@@ -50,7 +48,7 @@ function ExplosionSystem(stage) {
       type = types[1];
     var explosion = explosions[type].pop();
     if (explosion) {
-      explosion.rotation = ((random() > 0.5) ? -1 : 1) * random() * PI;
+      explosion.rotation = ((Math.random() > 0.5) ? -1 : 1) * Math.random() * Math.PI;
       explosion.x = x;
       explosion.y = y;
       stage.addChild(explosion);

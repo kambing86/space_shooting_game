@@ -17,7 +17,6 @@ $(function() {
 
   var stage = new PIXI.Container(),
     mask = new PIXI.Graphics(),
-    loader = PIXI.loader,
     gameEngine = new GameEngine(stage),
     winObject = $(window);
 
@@ -27,43 +26,48 @@ $(function() {
   Global.gameStage = stage;
   stage.mask = mask;
 
-  var assetsLoaded = $.Deferred();
-  var soundsLoaded = $.Deferred();
+  //load
+  (function(){
+    var assetsLoaded = $.Deferred();
+    var soundsLoaded = $.Deferred();
+    var loader = PIXI.loader;
 
-  loader.baseUrl = "image/";
-  var assetList = [];
-  for (var i in Assets)
-    assetList.push(Assets[i]);
-  loader
-    .once('complete', function() {
-      assetsLoaded.resolve();
-    })
-    .once('error', function() {
-      assetsLoaded.reject();
-    })
-    .add(assetList)
-    .load();
+    loader.baseUrl = "image/";
+    var assetList = [];
+    for (var i in Assets)
+      assetList.push(Assets[i]);
+    loader
+      .once('complete', function() {
+        assetsLoaded.resolve();
+      })
+      .once('error', function() {
+        assetsLoaded.reject();
+      })
+      .add(assetList)
+      .load();
 
-  Global.gameEvent.once('soundDone', function() {
-    soundsLoaded.resolve();
-  });
-  Global.gameEvent.once('soundFail', function() {
-    soundsLoaded.reject();
-  });
-  SoundSystem.init();
+    Global.gameEvent.once('soundDone', function() {
+      soundsLoaded.resolve();
+    });
+    Global.gameEvent.once('soundFail', function() {
+      soundsLoaded.reject();
+    });
+    SoundSystem.init();
 
-  $.when(assetsLoaded, soundsLoaded).then(function() {
-    gameEngine.init();
-    // var area = new PIXI.Graphics();
-    // area.beginFill(0xFFFFFF);
-    // area.drawRect(0, 0, Global.gameWidth, Global.gameHeight);
-    // area.endFill();
-    // stage.addChild(area);
-    Global.gameEvent.emit('gameStart');
-    animate();
-  }, function() {
-    alert("Loading failed");
-  });
+    $.when(assetsLoaded, soundsLoaded).then(function() {
+      assetsLoaded = soundsLoaded = loader = assetList = null;
+      gameEngine.init();
+      // var area = new PIXI.Graphics();
+      // area.beginFill(0xFFFFFF);
+      // area.drawRect(0, 0, Global.gameWidth, Global.gameHeight);
+      // area.endFill();
+      // stage.addChild(area);
+      Global.gameEvent.emit('gameStart');
+      animate();
+    }, function() {
+      alert("Loading failed");
+    });
+  })();
 
   function animate() {
     requestAnimationFrame(animate);
