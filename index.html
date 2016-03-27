@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Alien Shooting Game</title>
+  <title>DBS Shooting Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
     html,
@@ -20,12 +20,34 @@
       font-size: 5vh;
     }
 
-    .scoreDiv, .levelDiv {
+    .scoreDiv,
+    .levelDiv {
       top: 0;
     }
 
     .levelDiv {
       text-align: right;
+    }
+
+    .loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      font-size: 5vh;
+      background: #000;
+      color: #fff;
+    }
+
+    .loading div {
+      position: absolute;
+      display: block;
+      width: 100%;
+      top: 50%;
+      -webkit-transform: translate3d(0, -50%, 0);
+      transform: translate3d(0, -50%, 0);
+      text-align: center;
     }
   </style>
 </head>
@@ -41,6 +63,9 @@
   <canvas id="canvas"></canvas>
   <div class="ui-font scoreDiv">Score:<span> 0</span></div>
   <div class="ui-font levelDiv">Level:<span> 1</span></div>
+  <div class="loading">
+    <div>Loading...</div>
+  </div>
 </body>
 
 </html>

@@ -56,14 +56,21 @@ $(function() {
 
     $.when(assetsLoaded, soundsLoaded).then(function() {
       assetsLoaded = soundsLoaded = loader = assetList = null;
-      gameEngine.init();
-      // var area = new PIXI.Graphics();
-      // area.beginFill(0xFFFFFF);
-      // area.drawRect(0, 0, Global.gameWidth, Global.gameHeight);
-      // area.endFill();
-      // stage.addChild(area);
-      Global.gameEvent.emit('gameStart');
-      animate();
+      var loadingScreen = $(".loading");
+      loadingScreen.find("div").html("Tap on screen to start");
+      loadingScreen.on("click", function() {
+        loadingScreen.off("click");
+        loadingScreen.detach();
+        loadingScreen = null;
+        gameEngine.init();
+        // var area = new PIXI.Graphics();
+        // area.beginFill(0xFFFFFF);
+        // area.drawRect(0, 0, Global.gameWidth, Global.gameHeight);
+        // area.endFill();
+        // stage.addChild(area);
+        Global.gameEvent.emit('gameStart');
+        animate();
+      });
     }, function() {
       alert("Loading failed");
     });
