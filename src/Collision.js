@@ -9,7 +9,7 @@ var Collision = {
       groups[group] = [instance];
   },
   isCollide: function(instance, group) {
-    if (instance.parent == null) return;
+    if (!instance.visible) return;
     var instanceWidth = instance.width;
     var instanceHeight = instance.height;
     var x1 = instance.x + (0.5 - instance.anchor.x) * instanceWidth;
@@ -18,7 +18,7 @@ var Collision = {
     var target, targetWidth, targetHeight, x2, y2;
     for (var i = 0, l = array.length; i < l; i++) {
       target = array[i];
-      if (target.parent == null) continue;
+      if (!target.visible) continue;
       targetWidth = target.width;
       targetHeight = target.height;
       x2 = target.x + (0.5 - target.anchor.x) * targetWidth;

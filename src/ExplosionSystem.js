@@ -32,9 +32,11 @@ function ExplosionSystem(stage) {
           explosion.scale.x = explosion.scale.y = 2;
         }
         explosion.onComplete = function() {
-          this.parent.removeChild(this);
+          explosion.visible = false;
           explosions[this.type].push(this);
         };
+        explosion.visible = false;
+        stage.addChild(explosion);
         array.push(explosion);
       }
     }
@@ -51,7 +53,7 @@ function ExplosionSystem(stage) {
       explosion.rotation = ((Math.random() > 0.5) ? -1 : 1) * Math.random() * Math.PI;
       explosion.x = x;
       explosion.y = y;
-      stage.addChild(explosion);
+      explosion.visible = true;
       explosion.gotoAndPlay(0);
     }
   });

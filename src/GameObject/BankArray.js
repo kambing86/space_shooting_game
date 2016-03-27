@@ -28,7 +28,7 @@ function BankArray() {
       }
       bank.refresh();
       updates.push(bank);
-      that.addChild(bank);
+      bank.visible = true;
     }
   }
 
@@ -42,6 +42,8 @@ function BankArray() {
       for (i = 0; i < count; i++) {
         bank = new Bank(name, texture);
         bank.init();
+        bank.visible = false;
+        that.addChild(bank);
         array.push(bank);
       }
     }
@@ -50,7 +52,7 @@ function BankArray() {
   that.update = function(dt) {
     for (var i = 0, l = updates.length; i < l; i++) {
       var bank = updates[i];
-      if (bank.parent && bank.y < Global.gameHeight + bank.height)
+      if (bank.visible && bank.y < Global.gameHeight + bank.height)
         bank.update(dt);
       else {
         banks[bank.type].push(bank);

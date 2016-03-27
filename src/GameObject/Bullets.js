@@ -25,13 +25,15 @@ function Bullets(texture) {
     bullet.x = x;
     bullet.y = y;
     updates.push(bullet);
-    that.addChild(bullet);
+    bullet.visible = true;
   }
 
   that.init = function() {
     for (var i = 0; i < count; i++) {
       var bullet = new PIXI.Sprite(texture);
       bullet.anchor.x = bullet.anchor.y = 0.5;
+      bullet.visible = false;
+      that.addChild(bullet);
       bullets.push(bullet);
       Collision.addGroup(bullet, 'bullet');
     }
@@ -42,8 +44,8 @@ function Bullets(texture) {
     for (var i = 0, l = updates.length; i < l; i++) {
       var bullet = updates[i];
       bullet.y -= speed * dt;
-      if (bullet.y < -bullet.height || !bullet.parent) {
-        that.removeChild(bullet);
+      if (bullet.y < -bullet.height || !bullet.visible) {
+        bullet.visible = false;
         bullets.push(bullet);
         updates.splice(i, 1);
         l--;

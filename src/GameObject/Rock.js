@@ -40,16 +40,16 @@ function Rock(textureName, texture) {
     that.x += that.speedX * dt;
     that.y += that.speedY * dt;
     if (that.y > Global.gameHeight + that.height) {
-      that.parent.removeChild(that);
+      that.visible = false;
       return;
     }
     var target = Collision.isCollide(that, 'bullet');
     that.rotation += that.speedRotation * dt;
     if (target) {
-      target.parent.removeChild(target);
+      target.visible = false;
       that.life--;
       if (that.life > 0) return;
-      that.parent.removeChild(that);
+      that.visible = false;
       Global.gameEvent.emit('explosion', that.x, that.y, that.isBig);
       if (that.isBig)
         Global.gameEvent.emit('score', 10);

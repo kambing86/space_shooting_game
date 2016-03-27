@@ -78,9 +78,9 @@ function Plane(texture) {
   };
 
   that.update = function(dt) {
-    if (!that.parent) {
+    if (!that.visible) {
       if (Date.now() - deathTime >= 5000) {
-        Global.gameStage.addChild(that);
+        that.visible = true;
         spawn();
       } else
         return;
@@ -110,8 +110,8 @@ function Plane(texture) {
     //check collision with rock
     var target = Collision.isCollide(that, 'rock');
     if (target) {
-      target.parent.removeChild(target);
-      that.parent.removeChild(that);
+      target.visible = false;
+      that.visible = false;
       deathTime = Date.now();
       Global.gameEvent.emit('dead');
       Global.gameEvent.emit('explosion', target.x, target.y, target.isBig);

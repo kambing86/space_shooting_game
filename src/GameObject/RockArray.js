@@ -38,7 +38,7 @@ function RockArray() {
       }
       rock.refresh();
       updates.push(rock);
-      that.addChild(rock);
+      rock.visible = true;
     }
   }
 
@@ -52,6 +52,8 @@ function RockArray() {
       for (i = 0; i < count; i++) {
         rock = new Rock(name, texture);
         rock.init();
+        rock.visible = false;
+        that.addChild(rock);
         array.push(rock);
       }
     }
@@ -66,7 +68,7 @@ function RockArray() {
   that.update = function(dt) {
     for (var i = 0, l = updates.length; i < l; i++) {
       var rock = updates[i];
-      if (rock.parent && rock.y < Global.gameHeight + rock.height)
+      if (rock.visible && rock.y < Global.gameHeight + rock.height)
         rock.update(dt);
       else {
         rocks[rock.type].push(rock);
