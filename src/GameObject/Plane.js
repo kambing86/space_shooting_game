@@ -74,6 +74,11 @@ function Plane(texture) {
       .on('touchendoutside', onPointerUp)
       .on('mousemove', onPointerMove)
       .on('touchmove', onPointerMove);
+    that.scale.x = that.scale.y = 0.5;
+    Collision.addGroup(that, 'plane', Collision.TYPE_CIRCLE, {
+      width: that.width - 10,
+      height: that.height - 10
+    });
     spawn();
   };
 

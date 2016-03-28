@@ -25,6 +25,7 @@ function Bank(textureName, texture) {
   that.init = function() {
     that.anchor.x = that.anchor.y = 0.5;
     that.refresh();
+    Collision.addGroup(that, 'bank');
   };
 
   that.update = function(dt) {

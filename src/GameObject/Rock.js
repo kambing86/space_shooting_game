@@ -32,7 +32,7 @@ function Rock(textureName, texture) {
 
   that.init = function() {
     that.anchor.x = that.anchor.y = 0.5;
-    Collision.addGroup(that, 'rock');
+    Collision.addGroup(that, 'rock', Collision.TYPE_CIRCLE);
     refresh();
   };
 
