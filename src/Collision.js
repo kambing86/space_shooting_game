@@ -1,5 +1,35 @@
 //not complete
 //rotation not in the calculation
+// function rect_rect(x1, y1, width1, height1, rotation1, x2, y2, width2, height2, rotation2) {
+//   return Math.abs(x1 - x2) < (width1 + width2) / 2 && Math.abs(y1 - y2) < (height1 + height2) / 2;
+// }
+//
+// function rect_cir(x1, y1, width1, height1, rotation1, x2, y2, width2, height2, rotation2) {
+//   var direction2 = Math.atan2(y1 - y2, x1 - x2);
+//   var directionLocal2 = direction2 - rotation2;
+//   var distanceMove2 = distance(width2 / 2 * Math.cos(directionLocal2), height2 / 2 * Math.sin(directionLocal2));
+//   var x3 = x2 + distanceMove2 * Math.cos(direction2);
+//   var y3 = y2 + distanceMove2 * Math.sin(direction2);
+//   return Math.abs(x3 - x1) < width1 / 2 && Math.abs(y3 - y1) < height1 / 2;
+// }
+//
+// function cir_cir(x1, y1, width1, height1, rotation1, x2, y2, width2, height2, rotation2) {
+//   var direction1 = Math.atan2(y2 - y1, x2 - x1);
+//   var directionLocal1 = direction1 - rotation1;
+//   var distanceMove1 = distance(width1 / 2 * Math.cos(directionLocal1), height1 / 2 * Math.sin(directionLocal1));
+//   var x3 = x1 + distanceMove1 * Math.cos(direction1);
+//   var y3 = y1 + distanceMove1 * Math.sin(direction1);
+//   var direction2 = -(Math.PI - direction1);
+//   var directionLocal2 = direction2 - rotation2;
+//   var distanceMove2 = distance(width2 / 2 * Math.cos(directionLocal2), height2 / 2 * Math.sin(directionLocal2));
+//   var x4 = x2 + distanceMove2 * Math.cos(direction2);
+//   var y4 = y2 + distanceMove2 * Math.sin(direction2);
+//   return Math.abs(x4 - x1) < Math.abs(x3 - x1) && Math.abs(y4 - y1) < Math.abs(y3 - y1);
+// }
+//
+// function distance(x, y) {
+//   return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+// }
 
 var groups = {};
 

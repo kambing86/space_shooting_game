@@ -8,18 +8,21 @@ var instance = null;
 
 function ExplosionSystem(stage) {
   var explosions = {};
-  var types = [
-    Assets.explosion1.name,
-    Assets.explosion2.name
-  ];
+  var types = [{
+    name: Assets.explosion1.name,
+    count: 10
+  }, {
+    name: Assets.explosion2.name,
+    count: 20
+  }];
 
   (function() {
-    var count = 20;
     var totalNames = types.length;
-    var i, j, type, textures, array, explosion;
+    var i, j, type, count, textures, array, explosion;
     var resources = PIXI.loader.resources;
     for (i = 0; i < totalNames; i++) {
-      type = types[i];
+      type = types[i].name;
+      count = types[i].count;
       textures = JsonToArray.convert(resources[type].textures);
       array = explosions[type] = [];
       for (j = 0; j < count; j++) {
@@ -45,9 +48,9 @@ function ExplosionSystem(stage) {
   Global.gameEvent.on('explosion', function(x, y, big) {
     var type;
     if (big)
-      type = types[0];
+      type = types[0].name;
     else
-      type = types[1];
+      type = types[1].name;
     var explosion = explosions[type].pop();
     if (explosion) {
       explosion.rotation = ((Math.random() > 0.5) ? -1 : 1) * Math.random() * Math.PI;
