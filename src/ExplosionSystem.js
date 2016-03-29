@@ -32,7 +32,7 @@ function ExplosionSystem(stage) {
           explosion.scale.x = explosion.scale.y = 2;
         }
         explosion.onComplete = function() {
-          explosion.visible = false;
+          this.visible = false;
           explosions[this.type].push(this);
         };
         explosion.visible = false;
