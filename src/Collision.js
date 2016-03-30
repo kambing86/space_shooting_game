@@ -1,70 +1,42 @@
-//not complete
-//rotation not in the calculation
-// function rect_rect(x1, y1, width1, height1, rotation1, x2, y2, width2, height2, rotation2) {
-//   return Math.abs(x1 - x2) < (width1 + width2) / 2 && Math.abs(y1 - y2) < (height1 + height2) / 2;
-// }
-//
-// function rect_cir(x1, y1, width1, height1, rotation1, x2, y2, width2, height2, rotation2) {
-//   var direction2 = Math.atan2(y1 - y2, x1 - x2);
-//   var directionLocal2 = direction2 - rotation2;
-//   var distanceMove2 = distance(width2 / 2 * Math.cos(directionLocal2), height2 / 2 * Math.sin(directionLocal2));
-//   var x3 = x2 + distanceMove2 * Math.cos(direction2);
-//   var y3 = y2 + distanceMove2 * Math.sin(direction2);
-//   return Math.abs(x3 - x1) < width1 / 2 && Math.abs(y3 - y1) < height1 / 2;
-// }
-//
-// function cir_cir(x1, y1, width1, height1, rotation1, x2, y2, width2, height2, rotation2) {
-//   var direction1 = Math.atan2(y2 - y1, x2 - x1);
-//   var directionLocal1 = direction1 - rotation1;
-//   var distanceMove1 = distance(width1 / 2 * Math.cos(directionLocal1), height1 / 2 * Math.sin(directionLocal1));
-//   var x3 = x1 + distanceMove1 * Math.cos(direction1);
-//   var y3 = y1 + distanceMove1 * Math.sin(direction1);
-//   var direction2 = -(Math.PI - direction1);
-//   var directionLocal2 = direction2 - rotation2;
-//   var distanceMove2 = distance(width2 / 2 * Math.cos(directionLocal2), height2 / 2 * Math.sin(directionLocal2));
-//   var x4 = x2 + distanceMove2 * Math.cos(direction2);
-//   var y4 = y2 + distanceMove2 * Math.sin(direction2);
-//   return Math.abs(x4 - x1) < Math.abs(x3 - x1) && Math.abs(y4 - y1) < Math.abs(y3 - y1);
-// }
-//
-// function distance(x, y) {
-//   return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-// }
+// not complete
+// rotation not in the calculation
 
 var groups = {};
 
-function rect_rect(x1, y1, width1, height1, rotation1, x2, y2, width2, height2, rotation2) {
+function rect_rect(x1, y1, width1, height1, x2, y2, width2, height2) {
   return Math.abs(x1 - x2) < (width1 + width2) / 2 && Math.abs(y1 - y2) < (height1 + height2) / 2;
 }
 
-function rect_cir(x1, y1, width1, height1, rotation1, x2, y2, width2, height2, rotation2) {
-  var direction = Math.atan2(y1 - y2, x1 - x2);
-  var x3 = x2 + width2 / 2 * Math.cos(direction);
-  var y3 = y2 + height2 / 2 * Math.sin(direction);
-  return Math.abs(x3 - x1) < width1 / 2 && Math.abs(y3 - y1) < height1 / 2;
+// not accurate
+function rect_cir(x1, y1, width1, height1, x2, y2, width2, height2) {
+  var halfWidth1 = width1 / 2;
+  var halfHeight1 = height1 / 2;
+  var testX = (x1 > x2) ? x1 - halfWidth1 : x1 + halfWidth1;
+  var testY = (y1 > y2) ? y1 - halfHeight1 : y1 + halfHeight1;
+  return getDistance(Math.abs(testX - x2), Math.abs(testY - y2)) < height2 / 2;
 }
 
-function cir_cir(x1, y1, width1, height1, rotation1, x2, y2, width2, height2, rotation2) {
-  var direction1 = Math.atan2(y2 - y1, x2 - x1);
-  var x3 = x1 + width1 / 2 * Math.cos(direction1);
-  var y3 = y1 + height1 / 2 * Math.sin(direction1);
-  var direction2 = -(Math.PI - direction1);
-  var x4 = x2 + width2 / 2 * Math.cos(direction2);
-  var y4 = y2 + height2 / 2 * Math.sin(direction2);
-  return Math.abs(x4 - x1) < Math.abs(x3 - x1) && Math.abs(y4 - y1) < Math.abs(y3 - y1);
+function getDistance(x, y) {
+  return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 }
 
-function checkCollision(x1, y1, width1, height1, rotation1, type1, x2, y2, width2, height2, rotation2, type2) {
+function cir_cir(x1, y1, width1, height1, x2, y2, width2, height2) {
+  var totalRadius = height1 / 2 + height2 / 2;
+  var distance = getDistance(Math.abs(x1 - x2), Math.abs(y1 - y2));
+  return distance < totalRadius;
+}
+
+function checkCollision(x1, y1, width1, height1, type1, x2, y2, width2, height2, type2) {
   if (type1 == Collision.TYPE_RECTANGLE) {
     if (type2 == Collision.TYPE_RECTANGLE)
-      return rect_rect(x1, y1, width1, height1, rotation1, x2, y2, width2, height2, rotation2);
+      return rect_rect(x1, y1, width1, height1, x2, y2, width2, height2);
     else
-      return rect_cir(x1, y1, width1, height1, rotation1, x2, y2, width2, height2, rotation2);
+      return rect_cir(x1, y1, width1, height1, x2, y2, width2, height2);
   } else {
     if (type2 == Collision.TYPE_RECTANGLE)
-      return rect_cir(x2, y2, width2, height2, rotation2, x1, y1, width1, height1, rotation1);
+      return rect_cir(x2, y2, width2, height2, x1, y1, width1, height1);
     else
-      return cir_cir(x1, y1, width1, height1, rotation1, x2, y2, width2, height2, rotation2);
+      return cir_cir(x1, y1, width1, height1, x2, y2, width2, height2);
   }
 }
 
@@ -96,10 +68,9 @@ var Collision = {
     var height1 = instance.collisionArea.height;
     var x1 = instance.x + (0.5 - instance.anchor.x) * width1;
     var y1 = instance.y + (0.5 - instance.anchor.y) * height1;
-    var rotation1 = instance.rotation;
     var type1 = instance.collisionType;
     var array = groups[group];
-    var target, width2, height2, x2, y2, rotation2, type2;
+    var target, width2, height2, x2, y2, type2;
     for (var i = 0, l = array.length; i < l; i++) {
       target = array[i];
       if (!target.visible) continue;
@@ -107,9 +78,8 @@ var Collision = {
       height2 = target.collisionArea.height;
       x2 = target.x + (0.5 - target.anchor.x) * width2;
       y2 = target.y + (0.5 - target.anchor.y) * height2;
-      rotation2 = target.rotation;
       type2 = target.collisionType;
-      if (checkCollision(x1, y1, width1, height1, rotation1, type1, x2, y2, width2, height2, rotation2, type2))
+      if (checkCollision(x1, y1, width1, height1, type1, x2, y2, width2, height2, type2))
         return target;
     }
     return null;
