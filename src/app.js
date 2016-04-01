@@ -1,5 +1,8 @@
 // require('../css/app.css');
 // require('babel-polyfill');
+//
+// import Point from './Point';
+// console.log(Point);
 
 const PIXI = require('PIXI');
 
@@ -23,7 +26,7 @@ $(function() {
   Score.init();
   Level.init();
 
-  Global.gameStage = stage;
+  Global.init(stage);
   stage.mask = mask;
 
   //load

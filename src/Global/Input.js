@@ -1,7 +1,8 @@
 const EventEmitter = require('eventemitter3');
 const Extends = require('../util/extends');
+const Global = require('../Global');
 
-function Input() {
+function Input(stage) {
   var that = this;
   EventEmitter.call(that);
 
@@ -28,6 +29,11 @@ function Input() {
       keyDownList[event.keyCode] = false;
   }
 
+  function pointerListener(event) {
+    event.data.local = stage.toLocal(event.data.global);
+    that.emit(event.type, event);
+  }
+
   that.isDown = function(key) {
     return keyDownList[key];
   };
@@ -51,15 +57,17 @@ function Input() {
   // function pointerListener(event) {
   // }
   //
-  // that
-  //   .on('mousedown', pointerListener)
-  //   .on('touchstart', pointerListener)
-  //   .on('mouseup', pointerListener)
-  //   .on('touchend', pointerListener)
-  //   .on('mouseupoutside', pointerListener)
-  //   .on('touchendoutside', pointerListener)
-  //   .on('mousemove', pointerListener)
-  //   .on('touchmove', pointerListener);
+
+  stage.interactive = true;
+  stage
+    .on('mousedown', pointerListener)
+    .on('touchstart', pointerListener)
+    .on('mouseup', pointerListener)
+    .on('touchend', pointerListener)
+    .on('mouseupoutside', pointerListener)
+    .on('touchendoutside', pointerListener)
+    .on('mousemove', pointerListener)
+    .on('touchmove', pointerListener);
 }
 Extends(Input, EventEmitter);
 module.exports = Input;

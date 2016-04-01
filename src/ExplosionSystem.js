@@ -63,9 +63,9 @@ function ExplosionSystem(stage) {
 }
 
 module.exports = {
-  init: function(stage, textures) {
+  getInstance: function(stage) {
     if (instance) return instance;
-    instance = new ExplosionSystem(stage, textures);
+    instance = new ExplosionSystem(stage);
     return instance;
   }
 };

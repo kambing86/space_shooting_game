@@ -16,14 +16,15 @@ module.exports = {
       }, {
         test: /\.(gif|png|jpe?g|svg|eot|woff|ttf)$/,
         loader: "file?name=../[path][name].[ext]"
-      }, {
-        test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015']
-        }
       }
+      // {
+      //   test: /\.jsx?$/,
+      //   exclude: /(node_modules|bower_components)/,
+      //   loader: 'babel',
+      //   query: {
+      //     presets: ['es2015']
+      //   }
+      // }
       // {
       //   test: /.*\.(gif|png|jpe?g|svg)$/i,
       //   loaders: [

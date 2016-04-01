@@ -4,7 +4,7 @@ const Global = require('./Global');
 const Assets = require('./GameObject/Assets');
 const Background = require('./GameObject/Background');
 const Plane = require('./GameObject/Plane');
-const Bullets = require('./GameObject/Bullets');
+const BulletSystem = require('./BulletSystem');
 const RockArray = require('./GameObject/RockArray');
 const BankArray = require('./GameObject/BankArray');
 const ExplosionSystem = require('./ExplosionSystem');
@@ -23,11 +23,6 @@ function GameEngine(stage) {
 
   var bankSpawnConstant = 10000;
   var bankTick;
-
-  function pointerListener(event) {
-    event.data.local = stage.toLocal(event.data.global);
-    Global.Input.emit(event.type, event);
-  }
 
   function addScore(score) {
     currentScore += score;
@@ -50,36 +45,24 @@ function GameEngine(stage) {
     var plane = new Plane(resources[Assets.plane.name].texture);
 
     var bg = new Background(resources[Assets.bg.name].texture, plane);
-    stage.addChild(bg);
-    gameObjectList.push(bg);
-
-    stage.addChild(plane);
-    gameObjectList.push(plane);
-
-    var bullets = new Bullets(resources[Assets.bullet.name].texture);
-    stage.addChild(bullets);
-    gameObjectList.push(bullets);
 
     rocks = new RockArray();
-    stage.addChild(rocks);
-    gameObjectList.push(rocks);
 
     banks = new BankArray();
+
+    stage.addChild(bg);
+    stage.addChild(plane);
+    var bullets = BulletSystem.getInstance(stage, resources[Assets.bullet.name].texture);
+    stage.addChild(rocks);
     stage.addChild(banks);
+
+    ExplosionSystem.getInstance(stage);
+
+    gameObjectList.push(plane);
+    gameObjectList.push(bg);
+    gameObjectList.push(bullets);
+    gameObjectList.push(rocks);
     gameObjectList.push(banks);
-
-    ExplosionSystem.init(stage);
-
-    stage.interactive = true;
-    stage
-      .on('mousedown', pointerListener)
-      .on('touchstart', pointerListener)
-      .on('mouseup', pointerListener)
-      .on('touchend', pointerListener)
-      .on('mouseupoutside', pointerListener)
-      .on('touchendoutside', pointerListener)
-      .on('mousemove', pointerListener)
-      .on('touchmove', pointerListener);
 
     for (var i = 0, l = gameObjectList.length; i < l; i++)
       gameObjectList[i].init();
