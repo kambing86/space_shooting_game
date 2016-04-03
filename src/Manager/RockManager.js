@@ -1,15 +1,14 @@
 const PIXI = require('PIXI');
 
 const Global = require('../Global');
-const Extends = require('../util/extends');
-const Assets = require('./Assets');
-const Rock = require('./Rock');
+const Assets = require('../GameObject/Assets');
+const Rock = require('../GameObject/Rock');
 
-function RockArray() {
+var instance = null;
+
+function RockManager() {
   var that = this;
   var count = 40;
-
-  PIXI.Container.call(that);
 
   var rockNames = [Assets.rock1.name, Assets.rock2.name];
   var totalNames = rockNames.length;
@@ -20,6 +19,31 @@ function RockArray() {
   var lastFire = null;
   var spawnConstant = 2;
   var rocksPerSecond = spawnConstant;
+
+  (function() {
+    var resources = PIXI.loader.resources;
+    var i, j, name, texture, array, rock;
+    for (i = 0; i < totalNames; i++) {
+      name = rockNames[i];
+      texture = resources[name].texture;
+      array = rocks[name] = [];
+      for (j = 0; j < count; j++) {
+        rock = new Rock(name, texture);
+        rock.init();
+        rock.visible = false;
+        array.push(rock);
+      }
+    }
+  })();
+
+  that.addToStage = function(stage) {
+    var name, array, i;
+    for (name in rocks) {
+      array = rocks[name];
+      for (i = 0; i < count; i++)
+        stage.addChild(array[i]);
+    }
+  };
 
   function spawnRock() {
     var currentTime = Date.now();
@@ -43,20 +67,6 @@ function RockArray() {
   }
 
   that.init = function() {
-    var resources = PIXI.loader.resources;
-    var i, j, name, texture, array, rock;
-    for (j = 0; j < totalNames; j++) {
-      name = rockNames[j];
-      texture = resources[name].texture;
-      array = rocks[name] = [];
-      for (i = 0; i < count; i++) {
-        rock = new Rock(name, texture);
-        rock.init();
-        rock.visible = false;
-        that.addChild(rock);
-        array.push(rock);
-      }
-    }
     Global.gameEvent.on('spawn', function() {
       stopped = false;
     });
@@ -84,5 +94,11 @@ function RockArray() {
     rocksPerSecond = level * spawnConstant;
   };
 }
-Extends(RockArray, PIXI.Container);
-module.exports = RockArray;
+
+module.exports = {
+  getInstance: function() {
+    if (instance) return instance;
+    instance = new RockManager();
+    return instance;
+  }
+};

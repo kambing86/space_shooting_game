@@ -7,11 +7,11 @@
 const PIXI = require('PIXI');
 
 const Global = require('./Global');
-const SoundSystem = require('./SoundSystem');
+const SoundManager = require('./Manager/SoundManager');
 const GameEngine = require('./GameEngine');
 const Assets = require('./GameObject/Assets');
-const Score = require('./UI/Score');
-const Level = require('./UI/Level');
+const ScoreUI = require('./UI/Score');
+const TimeUI = require('./UI/Time');
 
 $(function() {
   var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, {
@@ -23,8 +23,8 @@ $(function() {
     gameEngine = new GameEngine(stage),
     winObject = $(window);
 
-  Score.init();
-  Level.init();
+  ScoreUI.init();
+  TimeUI.init();
 
   Global.init(stage);
   stage.mask = mask;
@@ -55,7 +55,7 @@ $(function() {
     Global.gameEvent.once('soundFail', function() {
       soundsLoaded.reject();
     });
-    SoundSystem.init();
+    SoundManager.init();
 
     $.when(assetsLoaded, soundsLoaded).then(function() {
       assetsLoaded = soundsLoaded = loader = assetList = null;
@@ -110,7 +110,7 @@ $(function() {
     stage.scale.x = stageWidth / gameWidth;
     stage.scale.y = stageHeight / gameHeight;
     renderer.resize(screenWidth, screenHeight);
-    Score.updatePosition(x, y);
-    Level.updatePosition(x, y, stageWidth);
+    ScoreUI.updatePosition(x, y);
+    TimeUI.updatePosition((screenWidth - stageWidth) / 2, y);
   }
 });

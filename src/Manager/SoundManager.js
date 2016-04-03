@@ -1,11 +1,11 @@
 // const Howl = require('Howl');
 const SoundJS = require('SoundJS');
 
-const Global = require('./Global');
+const Global = require('../Global');
 
 var instance = null;
 
-function SoundSystem() {
+function SoundManager() {
   var path = "sound/";
   var sounds = {
     laser: "laser",
@@ -74,7 +74,7 @@ function SoundSystem() {
 module.exports = {
   init: function() {
     if (instance) return instance;
-    instance = new SoundSystem();
+    instance = new SoundManager();
     return instance;
   }
 };

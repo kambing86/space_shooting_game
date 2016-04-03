@@ -1,12 +1,14 @@
 const PIXI = require('PIXI');
 
-const Global = require('./Global');
-const Assets = require('./GameObject/Assets');
-const JsonToArray = require('./util/JsonToArray');
+const Global = require('../Global');
+const Assets = require('../GameObject/Assets');
+const JsonToArray = require('../util/JsonToArray');
 
 var instance = null;
 
-function ExplosionSystem(stage) {
+function ExplosionManager() {
+  var that = this;
+
   var explosions = {};
   var types = [{
     name: Assets.explosion1.name,
@@ -39,11 +41,20 @@ function ExplosionSystem(stage) {
           explosions[this.type].push(this);
         };
         explosion.visible = false;
-        stage.addChild(explosion);
         array.push(explosion);
       }
     }
   })();
+
+  that.addToStage = function(stage) {
+    var name, array, i, count;
+    for (name in explosions) {
+      array = explosions[name];
+      count = array.length;
+      for (i = 0; i < count; i++)
+        stage.addChild(array[i]);
+    }
+  };
 
   Global.gameEvent.on('explosion', function(x, y, big) {
     var type;
@@ -63,9 +74,9 @@ function ExplosionSystem(stage) {
 }
 
 module.exports = {
-  getInstance: function(stage) {
+  getInstance: function() {
     if (instance) return instance;
-    instance = new ExplosionSystem(stage);
+    instance = new ExplosionManager();
     return instance;
   }
 };

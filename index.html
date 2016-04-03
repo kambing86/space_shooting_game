@@ -15,18 +15,11 @@
 
     .ui-font {
       position: absolute;
+      display: inline-block;
       color: #fff;
       pointer-events: none;
       font-size: 5vh;
-    }
-
-    .scoreDiv,
-    .levelDiv {
-      top: 0;
-    }
-
-    .levelDiv {
-      text-align: right;
+      text-align: center;
     }
 
     .loading {
@@ -56,12 +49,10 @@
   <script src="bower_components/pixi.js/bin/pixi.min.js"></script>
   <script src="bower_components/gsap/src/minified/TweenMax.min.js"></script>
   <script src="bower_components/SoundJS/lib/soundjs-0.6.2.min.js"></script>
-  <!-- <script src="bower_components/howler.js/howler.min.js"></script> -->
-  <!-- <script src="bower_components/PreloadJS/lib/preloadjs-0.6.2.min.js"></script> -->
   <script src="bin/bundle.js"></script>
   <canvas id="canvas"></canvas>
-  <div class="ui-font scoreDiv">Score:<span> 0</span></div>
-  <div class="ui-font levelDiv">Level:<span> 1</span></div>
+  <div class="ui-font scoreDiv">Score<br /><span></span></div>
+  <div class="ui-font timeDiv">Time<br /><span></span></div>
   <div class="loading">
     <div>Loading...</div>
   </div>

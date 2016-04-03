@@ -1,11 +1,11 @@
 const PIXI = require('PIXI');
 
-const Global = require('./Global');
-const Collision = require('./Collision');
+const Global = require('../Global');
+const Collision = require('../Collision');
 
 var instance = null;
 
-function BulletSystem(stage, texture) {
+function BulletManager(texture) {
   var that = this;
 
   var count = 20;
@@ -16,6 +16,22 @@ function BulletSystem(stage, texture) {
   var lastFire = null;
   var firePerSecond = 10;
   var speed = 1000;
+
+  (function() {
+    for (var i = 0; i < count; i++) {
+      var bullet = new PIXI.Sprite(texture);
+      bullet.anchor.x = bullet.anchor.y = 0.5;
+      bullet.visible = false;
+      bullets.push(bullet);
+      Collision.addGroup(bullet, 'bullet');
+    }
+  })();
+
+  that.addToStage = function(stage) {
+    var i;
+    for (i = 0; i < count; i++)
+      stage.addChild(bullets[i]);
+  };
 
   function shoot(x, y) {
     var currentTime = Date.now();
@@ -28,17 +44,9 @@ function BulletSystem(stage, texture) {
     bullet.visible = true;
   }
 
-  for (var i = 0; i < count; i++) {
-    var bullet = new PIXI.Sprite(texture);
-    bullet.anchor.x = bullet.anchor.y = 0.5;
-    bullet.visible = false;
-    stage.addChild(bullet);
-    bullets.push(bullet);
-    Collision.addGroup(bullet, 'bullet');
-  }
-  Global.gameEvent.on('shoot', shoot);
-
-  that.init = function() {};
+  that.init = function() {
+    Global.gameEvent.on('shoot', shoot);
+  };
 
   that.update = function(dt) {
     for (var i = 0, l = updates.length; i < l; i++) {
@@ -56,9 +64,9 @@ function BulletSystem(stage, texture) {
 }
 
 module.exports = {
-  getInstance: function(stage, texture) {
+  getInstance: function(texture) {
     if (instance) return instance;
-    instance = new BulletSystem(stage, texture);
+    instance = new BulletManager(texture);
     return instance;
   }
 };

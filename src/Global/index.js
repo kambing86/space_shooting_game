@@ -9,6 +9,5 @@ module.exports = {
   gameWidth: 500,
   gameHeight: 800,
   gameEvent: new EventEmitter(),
-  gameStartTime: null,
   Input: null
 };

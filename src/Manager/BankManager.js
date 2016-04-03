@@ -1,20 +1,44 @@
 const PIXI = require('PIXI');
 
 const Global = require('../Global');
-const Extends = require('../util/extends');
-const Assets = require('./Assets');
-const Bank = require('./Bank');
+const Assets = require('../GameObject/Assets');
+const Bank = require('../GameObject/Bank');
 
-function BankArray() {
+var instance = null;
+
+function BankManager() {
   var that = this;
   var count = 2;
-
-  PIXI.Container.call(that);
 
   var bankNames = [Assets.dbs.name, Assets.standard.name, Assets.uob.name];
   var totalNames = bankNames.length;
   var banks = {};
   var updates = [];
+
+  (function(){
+    var resources = PIXI.loader.resources;
+    var i, j, name, texture, array, bank;
+    for (i = 0; i < totalNames; i++) {
+      name = bankNames[i];
+      texture = resources[name].texture;
+      array = banks[name] = [];
+      for (j = 0; j < count; j++) {
+        bank = new Bank(name, texture);
+        bank.init();
+        bank.visible = false;
+        array.push(bank);
+      }
+    }
+  })();
+
+  that.addToStage = function(stage) {
+    var name, array, i;
+    for (name in banks) {
+      array = banks[name];
+      for (i = 0; i < count; i++)
+        stage.addChild(array[i]);
+    }
+  };
 
   function spawnBank() {
     if (updates.length > totalNames * count) return;
@@ -33,20 +57,6 @@ function BankArray() {
   }
 
   that.init = function() {
-    var resources = PIXI.loader.resources;
-    var i, j, name, texture, array, bank;
-    for (j = 0; j < totalNames; j++) {
-      name = bankNames[j];
-      texture = resources[name].texture;
-      array = banks[name] = [];
-      for (i = 0; i < count; i++) {
-        bank = new Bank(name, texture);
-        bank.init();
-        bank.visible = false;
-        that.addChild(bank);
-        array.push(bank);
-      }
-    }
   };
 
   that.update = function(dt) {
@@ -65,5 +75,11 @@ function BankArray() {
 
   that.spawn = spawnBank;
 }
-Extends(BankArray, PIXI.Container);
-module.exports = BankArray;
+
+module.exports = {
+  getInstance: function() {
+    if (instance) return instance;
+    instance = new BankManager();
+    return instance;
+  }
+};

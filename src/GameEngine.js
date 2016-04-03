@@ -4,20 +4,24 @@ const Global = require('./Global');
 const Assets = require('./GameObject/Assets');
 const Background = require('./GameObject/Background');
 const Plane = require('./GameObject/Plane');
-const BulletSystem = require('./BulletSystem');
-const RockArray = require('./GameObject/RockArray');
-const BankArray = require('./GameObject/BankArray');
-const ExplosionSystem = require('./ExplosionSystem');
-const Score = require('./UI/Score');
-const Level = require('./UI/Level');
+const BulletManager = require('./Manager/BulletManager');
+const RockManager = require('./Manager/RockManager');
+const BankManager = require('./Manager/BankManager');
+const ExplosionManager = require('./Manager/ExplosionManager');
+const ScoreUI = require('./UI/Score');
+const TimeUI = require('./UI/Time');
 
 function GameEngine(stage) {
   var that = this;
 
-  var lastTick = Date.now();
+  var lastTick;
   var gameObjectList = [];
   var currentScore = 0;
-  var currentLevel = 1;
+  // var currentLevel = 1;
+  var timeLimit = 60;
+
+  var updateTimerTick;
+
   var rocks;
   var banks;
 
@@ -26,37 +30,34 @@ function GameEngine(stage) {
 
   function addScore(score) {
     currentScore += score;
-    Score.updateScore(currentScore);
-    if (currentLevel < 4 && currentLevel < currentScore / 500) {
-      currentLevel++;
-      Level.updateLevel(currentLevel);
-      rocks.updateLevel(currentLevel);
-    }
+    ScoreUI.updateScore(currentScore);
   }
 
   function resetScore() {
     currentScore = 0;
-    Score.updateScore(currentScore);
+    ScoreUI.updateScore(currentScore);
   }
 
-  that.init = function() {
+  that.init = function () {
     var resources = PIXI.loader.resources;
 
     var plane = new Plane(resources[Assets.plane.name].texture);
 
     var bg = new Background(resources[Assets.bg.name].texture, plane);
 
-    rocks = new RockArray();
+    var bullets = BulletManager.getInstance(resources[Assets.bullet.name].texture);
 
-    banks = new BankArray();
+    rocks = RockManager.getInstance();
+    banks = BankManager.getInstance();
+
+    var explosions = ExplosionManager.getInstance();
 
     stage.addChild(bg);
     stage.addChild(plane);
-    var bullets = BulletSystem.getInstance(stage, resources[Assets.bullet.name].texture);
-    stage.addChild(rocks);
-    stage.addChild(banks);
-
-    ExplosionSystem.getInstance(stage);
+    bullets.addToStage(stage);
+    rocks.addToStage(stage);
+    banks.addToStage(stage);
+    explosions.addToStage(stage);
 
     gameObjectList.push(plane);
     gameObjectList.push(bg);
@@ -67,14 +68,16 @@ function GameEngine(stage) {
     for (var i = 0, l = gameObjectList.length; i < l; i++)
       gameObjectList[i].init();
 
-    Global.gameStartTime = Date.now();
     Global.gameEvent.on('score', addScore);
     Global.gameEvent.on('resetscore', resetScore);
 
-    bankTick = Date.now();
+    ScoreUI.updateScore(currentScore);
+    TimeUI.updateTime(timeLimit);
+
+    updateTimerTick = bankTick = lastTick = Date.now();
   };
 
-  that.update = function() {
+  that.update = function () {
     var currentTime = Date.now();
     var delta = (currentTime - lastTick) * 0.001;
     for (var i = 0, l = gameObjectList.length; i < l; i++)
@@ -82,6 +85,10 @@ function GameEngine(stage) {
     if (currentTime - bankTick > bankSpawnConstant) {
       banks.spawn();
       bankTick = currentTime;
+    }
+    if (currentTime - updateTimerTick > 1000) {
+      updateTimerTick += 1000;
+      TimeUI.updateTime();
     }
     lastTick = currentTime;
   };
