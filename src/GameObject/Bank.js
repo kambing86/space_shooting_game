@@ -45,7 +45,7 @@ function Bank(textureName, texture) {
       if (textureName == Assets.dbs.name)
         Global.gameEvent.emit('resetscore');
       else {
-        Global.gameEvent.emit('score', 500);
+        Global.gameEvent.emit('score', 50);
         Global.gameEvent.emit('bonus');
       }
     }

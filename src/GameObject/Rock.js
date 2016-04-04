@@ -52,7 +52,7 @@ function Rock(textureName, texture) {
       that.visible = false;
       Global.gameEvent.emit('explosion', that.x, that.y, that.isBig);
       if (that.isBig)
-        Global.gameEvent.emit('score', 50);
+        Global.gameEvent.emit('score', 30);
       else
         Global.gameEvent.emit('score', 10);
     }

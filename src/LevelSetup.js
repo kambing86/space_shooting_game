@@ -1,21 +1,21 @@
 module.exports = [{
-  rocks: 3,
+  rocks: 1,
   dbs: false,
   banks: false,
-  target: 3000
+  target: 10
+}, {
+  rocks: 2,
+  dbs: false,
+  banks: false,
+  target: 100
+}, {
+  rocks: 3,
+  dbs: true,
+  banks: false,
+  target: 100
 }, {
   rocks: 4,
   dbs: true,
-  banks: false,
-  target: 3000
-}, {
-  rocks: 5,
-  dbs: true,
   banks: true,
-  target: 5000
-}, {
-  rocks: 6,
-  dbs: true,
-  banks: true,
-  target: 5000
+  target: 200
 }];

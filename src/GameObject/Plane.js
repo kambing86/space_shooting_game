@@ -120,6 +120,7 @@ function Plane(texture) {
       that.visible = false;
       deathTime = Date.now();
       Global.gameEvent.emit('dead');
+      Global.gameEvent.emit('gameover');
       Global.gameEvent.emit('explosion', target.x, target.y, target.isBig);
       Global.gameEvent.emit('explosion', that.x, that.y);
       stopped = true;
