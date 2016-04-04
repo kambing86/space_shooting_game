@@ -93,7 +93,8 @@ $(function() {
       if (levelSetup.banks)
         displayText += "Shoot other banks for getting bonus points<br/>";
       displayText += "Tap on screen to start";
-      TweenMax.staggerTo(loadingDivText, 5, {
+      var totalTime = displayText.length * 0.05;
+      TweenMax.to(loadingDivText, totalTime, {
         text: {
           value: displayText
         },
