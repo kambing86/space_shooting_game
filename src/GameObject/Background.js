@@ -22,8 +22,15 @@ function Background(texture, plane) {
     that.addChild(sprite);
     that.scale.x = that.scale.y = Global.gameHeight / resetHeight;
     resetHeight = that.height / 2;
+    // var widthForGame = that.width;
+    for (var i = 0; i < 4; i++) {
+      sprite = new PIXI.Sprite(texture);
+      sprite.x = ((i % 2 == 0) ? -1 : 1) * sprite.width;
+      sprite.y = ((i < 2) ? -1 : 0) * sprite.height;
+      that.addChild(sprite);
+    }
     that.cacheAsBitmap = true;
-    movableWidth = that.width - Global.gameWidth;
+    movableWidth = 50;
   };
 
   that.update = function(dt) {

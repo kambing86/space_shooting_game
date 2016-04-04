@@ -24,7 +24,7 @@ $(function() {
   });
 
   var stage = new PIXI.Container(),
-    mask = new PIXI.Graphics(),
+    // mask = new PIXI.Graphics(),
     gameEngine = new GameEngine(stage),
     winObject = $(window);
 
@@ -33,7 +33,7 @@ $(function() {
   InGameText.init();
 
   Global.init(stage);
-  stage.mask = mask;
+  // stage.mask = mask;
 
   //load
   (function() {
@@ -138,12 +138,12 @@ $(function() {
       stageWidth = stageHeight / screenRatio;
     else
       stageHeight = stageWidth * screenRatio;
-    mask.clear();
-    mask.beginFill(0xFFFFFF, 1);
+    // mask.clear();
+    // mask.beginFill(0xFFFFFF, 1);
     var x = (screenWidth - stageWidth) / 2;
     var y = (screenHeight - stageHeight) / 2;
-    mask.drawRect(x, y, stageWidth, stageHeight);
-    mask.endFill();
+    // mask.drawRect(x, y, stageWidth, stageHeight);
+    // mask.endFill();
     stage.x = x;
     stage.y = y;
     stage.scale.x = stageWidth / gameWidth;
