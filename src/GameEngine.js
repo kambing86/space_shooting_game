@@ -10,6 +10,9 @@ const BankManager = require('./Manager/BankManager');
 const ExplosionManager = require('./Manager/ExplosionManager');
 const ScoreUI = require('./UI/Score');
 const TimeUI = require('./UI/Time');
+const InGameText = require('./UI/InGameText');
+const LevelSetup = require('./LevelSetup');
+const getParameter = require('./util').getParameter;
 
 function GameEngine(stage) {
   var that = this;
@@ -22,11 +25,16 @@ function GameEngine(stage) {
 
   var updateTimerTick;
 
+  var plane;
   var rocks;
   var banks;
 
-  var bankSpawnConstant = 10000;
+  var bankSpawnConstant = 8000;
   var bankTick;
+
+  var levelSetup;
+  var target = 0;
+  var stopped = false;
 
   function addScore(score) {
     currentScore += score;
@@ -36,19 +44,29 @@ function GameEngine(stage) {
   function resetScore() {
     currentScore = 0;
     ScoreUI.updateScore(currentScore);
+    InGameText.resetScore();
   }
 
-  that.init = function () {
+  that.init = function() {
+    var level = getParameter("level");
+    if (level) {
+      levelSetup = LevelSetup[parseInt(level) - 1];
+      target = levelSetup.target;
+    } else {
+      $("body").detach();
+      alert("Please use correct link to play the game");
+    }
+
     var resources = PIXI.loader.resources;
 
-    var plane = new Plane(resources[Assets.plane.name].texture);
+    plane = new Plane(resources[Assets.plane.name].texture);
 
     var bg = new Background(resources[Assets.bg.name].texture, plane);
 
     var bullets = BulletManager.getInstance(resources[Assets.bullet.name].texture);
 
     rocks = RockManager.getInstance();
-    banks = BankManager.getInstance();
+    banks = BankManager.getInstance(levelSetup.dbs, levelSetup.banks);
 
     var explosions = ExplosionManager.getInstance();
 
@@ -69,15 +87,36 @@ function GameEngine(stage) {
       gameObjectList[i].init();
 
     Global.gameEvent.on('score', addScore);
+    Global.gameEvent.on('bonus', function() {
+      InGameText.bonusScore();
+    });
     Global.gameEvent.on('resetscore', resetScore);
+    Global.gameEvent.once('spawn', function() {
+      updateTimerTick = Date.now();
+      InGameText.disappear();
+    });
+    Global.gameEvent.once('gameover', function() {
+      stopped = true;
+      if (currentScore >= target)
+        InGameText.setText("MISSION SUCCESS");
+      else
+        InGameText.setText("MISSION FAILED");
+    });
 
     ScoreUI.updateScore(currentScore);
     TimeUI.updateTime(timeLimit);
 
-    updateTimerTick = bankTick = lastTick = Date.now();
+    rocks.updateLevel(levelSetup.rocks);
   };
 
-  that.update = function () {
+  that.start = function() {
+    InGameText.setText("Target<br/>" + target);
+    plane.start();
+    bankTick = lastTick = Date.now();
+  };
+
+  that.update = function() {
+    if (stopped) return;
     var currentTime = Date.now();
     var delta = (currentTime - lastTick) * 0.001;
     for (var i = 0, l = gameObjectList.length; i < l; i++)
@@ -86,9 +125,12 @@ function GameEngine(stage) {
       banks.spawn();
       bankTick = currentTime;
     }
-    if (currentTime - updateTimerTick > 1000) {
+    if (updateTimerTick && currentTime - updateTimerTick > 1000) {
       updateTimerTick += 1000;
-      TimeUI.updateTime();
+      timeLimit--;
+      TimeUI.updateTime(timeLimit);
+      if (timeLimit == 0)
+        Global.gameEvent.emit('gameover');
     }
     lastTick = currentTime;
   };

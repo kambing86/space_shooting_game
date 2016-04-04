@@ -1,7 +1,7 @@
 const PIXI = require('PIXI');
 
 const Global = require('../Global');
-const Extends = require('../util/extends');
+const Extends = require('../util').extends;
 const Collision = require('../Collision');
 const Assets = require('./Assets');
 
@@ -44,8 +44,10 @@ function Bank(textureName, texture) {
       Global.gameEvent.emit('explosion', that.x, that.y, true);
       if (textureName == Assets.dbs.name)
         Global.gameEvent.emit('resetscore');
-      else
-        Global.gameEvent.emit('score', 100);
+      else {
+        Global.gameEvent.emit('score', 500);
+        Global.gameEvent.emit('bonus');
+      }
     }
   };
 }

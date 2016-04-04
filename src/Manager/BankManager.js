@@ -6,16 +6,21 @@ const Bank = require('../GameObject/Bank');
 
 var instance = null;
 
-function BankManager() {
+function BankManager(gotDbs, gotBanks) {
   var that = this;
   var count = 2;
 
-  var bankNames = [Assets.dbs.name, Assets.standard.name, Assets.uob.name];
+  var bankNames = [];
+  if (gotDbs)
+    bankNames.push(Assets.dbs.name);
+  if (gotBanks) {
+    bankNames.push(Assets.standard.name, Assets.uob.name);
+  }
   var totalNames = bankNames.length;
   var banks = {};
   var updates = [];
 
-  (function(){
+  (function() {
     var resources = PIXI.loader.resources;
     var i, j, name, texture, array, bank;
     for (i = 0; i < totalNames; i++) {
@@ -41,6 +46,7 @@ function BankManager() {
   };
 
   function spawnBank() {
+    if (!totalNames) return;
     if (updates.length > totalNames * count) return;
     var name = bankNames[Math.floor(Math.random() * totalNames)];
     var bank;
@@ -56,8 +62,7 @@ function BankManager() {
     }
   }
 
-  that.init = function() {
-  };
+  that.init = function() {};
 
   that.update = function(dt) {
     for (var i = 0, l = updates.length; i < l; i++) {
@@ -77,9 +82,9 @@ function BankManager() {
 }
 
 module.exports = {
-  getInstance: function() {
+  getInstance: function(dbs, banks) {
     if (instance) return instance;
-    instance = new BankManager();
+    instance = new BankManager(dbs, banks);
     return instance;
   }
 };

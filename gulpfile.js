@@ -2,7 +2,7 @@ const gulp = require("gulp");
 const gutil = require("gulp-util");
 // const connect = require("gulp-connect");
 const exec = require("child_process").exec;
-const webPath = "/";
+const webPath = "/?level=1";
 const webpack = require("webpack");
 const webpackConfig = require("./webpack.config.js");
 const myDevConfig = Object.create(webpackConfig);

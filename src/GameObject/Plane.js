@@ -3,7 +3,7 @@ const TweenMax = require('TweenMax');
 const TimelineMax = require('TimelineMax');
 
 const Global = require('../Global');
-const Extends = require('../util/extends');
+const Extends = require('../util').extends;
 const Collision = require('../Collision');
 
 function Plane(texture) {
@@ -79,8 +79,9 @@ function Plane(texture) {
       width: that.width - 10,
       height: that.height - 10
     });
-    spawn();
   };
+
+  that.start = spawn;
 
   that.update = function(dt) {
     if (!that.visible) {

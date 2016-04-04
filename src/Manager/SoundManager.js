@@ -1,4 +1,3 @@
-// const Howl = require('Howl');
 const SoundJS = require('SoundJS');
 
 const Global = require('../Global');

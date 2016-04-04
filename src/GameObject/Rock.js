@@ -1,7 +1,7 @@
 const PIXI = require('PIXI');
 
 const Global = require('../Global');
-const Extends = require('../util/extends');
+const Extends = require('../util').extends;
 const Collision = require('../Collision');
 const Assets = require('./Assets');
 
@@ -52,9 +52,9 @@ function Rock(textureName, texture) {
       that.visible = false;
       Global.gameEvent.emit('explosion', that.x, that.y, that.isBig);
       if (that.isBig)
-        Global.gameEvent.emit('score', 10);
+        Global.gameEvent.emit('score', 50);
       else
-        Global.gameEvent.emit('score', 5);
+        Global.gameEvent.emit('score', 10);
     }
   };
 }

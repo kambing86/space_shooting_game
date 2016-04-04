@@ -3,10 +3,10 @@ var scoreSpan;
 module.exports = {
   init: function() {
     scoreDiv = $(".scoreDiv");
-    scoreSpan = $(".scoreDiv span");
+    scoreSpan = $(".scoreDiv span")[0];
   },
   updateScore: function(score) {
-    scoreSpan.html(score);
+    scoreSpan.innerHTML = score;
   },
   updatePosition: function(x, y) {
     scoreDiv.css({

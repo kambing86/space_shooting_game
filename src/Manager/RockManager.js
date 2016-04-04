@@ -17,8 +17,7 @@ function RockManager() {
 
   var stopped = true;
   var lastFire = null;
-  var spawnConstant = 2;
-  var rocksPerSecond = spawnConstant;
+  var rocksPerSecond = 2;
 
   (function() {
     var resources = PIXI.loader.resources;
@@ -90,8 +89,8 @@ function RockManager() {
     spawnRock();
   };
 
-  that.updateLevel = function(level) {
-    rocksPerSecond = level * spawnConstant;
+  that.updateLevel = function(spawnConstant) {
+    rocksPerSecond = spawnConstant;
   };
 }
 

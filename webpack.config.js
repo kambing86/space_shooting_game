@@ -39,6 +39,7 @@ module.exports = {
     "PIXI": "PIXI",
     "TweenMax": "TweenMax",
     "TimelineMax": "TimelineMax",
+    "Linear": "Linear",
     "SoundJS": "createjs.Sound"
   },
   plugins: [

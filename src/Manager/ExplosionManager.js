@@ -2,7 +2,7 @@ const PIXI = require('PIXI');
 
 const Global = require('../Global');
 const Assets = require('../GameObject/Assets');
-const JsonToArray = require('../util/JsonToArray');
+const JsonToArray = require('../util').json2Array;
 
 var instance = null;
 
@@ -25,7 +25,7 @@ function ExplosionManager() {
     for (i = 0; i < totalNames; i++) {
       type = types[i].name;
       count = types[i].count;
-      textures = JsonToArray.convert(resources[type].textures);
+      textures = JsonToArray(resources[type].textures);
       array = explosions[type] = [];
       for (j = 0; j < count; j++) {
         explosion = new PIXI.extras.MovieClip(textures);

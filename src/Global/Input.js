@@ -1,6 +1,6 @@
 const EventEmitter = require('eventemitter3');
-const Extends = require('../util/extends');
-const Global = require('../Global');
+const Extends = require('../util').extends;
+// const Global = require('../Global');
 
 function Input(stage) {
   var that = this;

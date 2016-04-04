@@ -1,7 +1,7 @@
 const PIXI = require('PIXI');
 
 const Global = require('../Global');
-const Extends = require('../util/extends');
+const Extends = require('../util').extends;
 
 function Background(texture, plane) {
   var that = this;

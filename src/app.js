@@ -5,6 +5,8 @@
 // console.log(Point);
 
 const PIXI = require('PIXI');
+const TweenMax = require('TweenMax');
+const Linear = require('Linear');
 
 const Global = require('./Global');
 const SoundManager = require('./Manager/SoundManager');
@@ -12,6 +14,9 @@ const GameEngine = require('./GameEngine');
 const Assets = require('./GameObject/Assets');
 const ScoreUI = require('./UI/Score');
 const TimeUI = require('./UI/Time');
+const InGameText = require('./UI/InGameText');
+const LevelSetup = require('./LevelSetup');
+const getParameter = require('./util').getParameter;
 
 $(function() {
   var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, {
@@ -25,12 +30,21 @@ $(function() {
 
   ScoreUI.init();
   TimeUI.init();
+  InGameText.init();
 
   Global.init(stage);
   stage.mask = mask;
 
   //load
-  (function(){
+  (function() {
+    var loadingDivText = $(".loading div");
+    TweenMax.to(loadingDivText, 1, {
+      text: {
+        value: "Loading..."
+      },
+      ease: Linear.easeNone
+    });
+
     var assetsLoaded = $.Deferred();
     var soundsLoaded = $.Deferred();
     var loader = PIXI.loader;
@@ -59,20 +73,42 @@ $(function() {
 
     $.when(assetsLoaded, soundsLoaded).then(function() {
       assetsLoaded = soundsLoaded = loader = assetList = null;
+      gameEngine.init();
+      // var area = new PIXI.Graphics();
+      // area.beginFill(0xFFFFFF);
+      // area.drawRect(0, 0, Global.gameWidth, Global.gameHeight);
+      // area.endFill();
+      // stage.addChild(area);
+
+      var level = getParameter("level");
+      var levelSetup;
+      if (level)
+        levelSetup = LevelSetup[parseInt(level) - 1];
+      else return;
+
       var loadingScreen = $(".loading");
-      loadingScreen.find("div").html("Tap on screen to start");
-      loadingScreen.on("click", function() {
-        loadingScreen.off("click");
-        loadingScreen.detach();
-        loadingScreen = null;
-        gameEngine.init();
-        // var area = new PIXI.Graphics();
-        // area.beginFill(0xFFFFFF);
-        // area.drawRect(0, 0, Global.gameWidth, Global.gameHeight);
-        // area.endFill();
-        // stage.addChild(area);
-        Global.gameEvent.emit('gameStart');
-        animate();
+      var displayText = "Level " + level + "<br/>";
+      if (levelSetup.dbs)
+        displayText += "Avoid shooting DBS<br/>";
+      if (levelSetup.banks)
+        displayText += "Shoot other banks for getting bonus points<br/>";
+      displayText += "Tap on screen to start";
+      TweenMax.staggerTo(loadingDivText, 5, {
+        text: {
+          value: displayText
+        },
+        onComplete: function() {
+          loadingScreen.on("click", function() {
+            loadingScreen.off("click");
+            loadingScreen.detach();
+            loadingScreen = null;
+            Global.gameEvent.emit('gameStart');
+            gameEngine.start();
+            animate();
+          });
+        },
+        ease: Linear.easeNone,
+        delay: 1
       });
     }, function() {
       alert("Loading failed");

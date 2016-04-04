@@ -4,10 +4,10 @@ var timeSpan;
 module.exports = {
   init: function() {
     timeDiv = $(".timeDiv");
-    timeSpan = $(".timeDiv span");
+    timeSpan = $(".timeDiv span")[0];
   },
   updateTime: function(time) {
-    timeSpan.html(time);
+    timeSpan.innerHTML = time;
   },
   updatePosition: function(x, y) {
     timeDiv.css({
