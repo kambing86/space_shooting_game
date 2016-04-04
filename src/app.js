@@ -38,7 +38,7 @@ $(function() {
   //load
   (function() {
     var loadingDivText = $(".loading div");
-    TweenMax.to(loadingDivText, 1, {
+    var loadingTweening = TweenMax.to(loadingDivText, 1, {
       text: {
         value: "Loading..."
       },
@@ -93,6 +93,7 @@ $(function() {
         displayText += "Shoot other banks for getting bonus points<br/>";
       displayText += "Tap on screen to start";
       var totalTime = displayText.length * 0.05;
+      var delay = loadingTweening.duration() * (1 - loadingTweening.progress());
       TweenMax.to(loadingDivText, totalTime, {
         text: {
           value: displayText
@@ -102,13 +103,15 @@ $(function() {
             loadingScreen.off("click");
             loadingScreen.detach();
             loadingScreen = null;
+            loadingTweening = null;
+            TweenMax.killTweensOf(loadingDivText);
             Global.gameEvent.emit('gameStart');
             gameEngine.start();
             animate();
           });
         },
         ease: Linear.easeNone,
-        delay: 1
+        delay: delay
       });
     }, function() {
       alert("Loading failed");
