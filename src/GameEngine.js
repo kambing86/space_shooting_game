@@ -49,13 +49,13 @@ function GameEngine(stage) {
 
   that.init = function() {
     var level = getParameter("level");
-    if (level) {
-      levelSetup = LevelSetup[parseInt(level) - 1];
-      target = levelSetup.target;
-    } else {
+    if (level) levelSetup = LevelSetup[parseInt(level) - 1];
+    if (!levelSetup) {
       $("body").detach();
       alert("Please use correct link to play the game");
+      return;
     }
+    target = levelSetup.target;
 
     var resources = PIXI.loader.resources;
 

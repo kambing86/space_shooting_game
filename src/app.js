@@ -82,9 +82,8 @@ $(function() {
 
       var level = getParameter("level");
       var levelSetup;
-      if (level)
-        levelSetup = LevelSetup[parseInt(level) - 1];
-      else return;
+      if (level) levelSetup = LevelSetup[parseInt(level) - 1];
+      if (!levelSetup) return;
 
       var loadingScreen = $(".loading");
       var displayText = "Level " + level + "<br/>";
