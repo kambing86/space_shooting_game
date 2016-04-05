@@ -87,6 +87,7 @@ $(function() {
 
       var loadingScreen = $(".loading");
       var displayText = "Level " + level + "<br/>";
+      displayText += "Destroy all oncoming asteroids<br/>";
       if (levelSetup.dbs)
         displayText += "Avoid shooting DBS<br/>";
       if (levelSetup.banks)
