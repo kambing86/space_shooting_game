@@ -12,7 +12,7 @@ const ScoreUI = require('./UI/Score');
 const TimeUI = require('./UI/Time');
 const InGameText = require('./UI/InGameText');
 const LevelSetup = require('./LevelSetup');
-const getParameter = require('./util').getParameter;
+const util = require('./util');
 
 function GameEngine(stage) {
   var that = this;
@@ -47,8 +47,17 @@ function GameEngine(stage) {
     InGameText.resetScore();
   }
 
+  function postMessage() {
+    setTimeout(function(){
+      util.postMessage({
+        score: currentScore,
+        success: currentScore >= target
+      })
+    }, 2000);
+  }
+
   that.init = function() {
-    var level = getParameter("level");
+    var level = util.getParameter("level");
     if (level) levelSetup = LevelSetup[parseInt(level) - 1];
     if (!levelSetup) {
       $("body").detach();
@@ -101,6 +110,7 @@ function GameEngine(stage) {
         InGameText.setText("MISSION SUCCESS");
       else
         InGameText.setText("MISSION FAILED");
+      postMessage();
     });
 
     ScoreUI.updateScore(currentScore);

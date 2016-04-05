@@ -2,20 +2,24 @@ module.exports = [{
   rocks: 1,
   dbs: false,
   banks: false,
-  target: 10
+  sparks: false,
+  target: 100
 }, {
   rocks: 2,
-  dbs: false,
+  dbs: true,
   banks: false,
-  target: 100
+  sparks: false,
+  target: 500
+}, {
+  rocks: 2,
+  dbs: true,
+  banks: true,
+  sparks: false,
+  target: 1000
 }, {
   rocks: 3,
   dbs: true,
-  banks: false,
-  target: 100
-}, {
-  rocks: 4,
-  dbs: true,
   banks: true,
-  target: 200
+  sparks: true,
+  target: 1000
 }];

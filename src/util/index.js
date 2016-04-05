@@ -14,5 +14,9 @@ module.exports = {
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)", "i"),
       results = regex.exec(location.search);
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  },
+  postMessage: function(msg) {
+    if (parent)
+      parent.postMessage(msg, location.origin);
   }
 };
