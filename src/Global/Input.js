@@ -1,5 +1,5 @@
 const EventEmitter = require('eventemitter3');
-const Extends = require('../util').extends;
+const Extends = require('../util').rn_extends_rn;
 // const Global = require('../Global');
 
 function Input(stage) {
@@ -9,10 +9,10 @@ function Input(stage) {
   var keyDownList = {};
   // var pointerList = {};
 
-  that.KEY_LEFT = 37;
-  that.KEY_UP = 38;
-  that.KEY_RIGHT = 39;
-  that.KEY_DOWN = 40;
+  that.rn_KEY_LEFT_rn = 37;
+  that.rn_KEY_UP_rn = 38;
+  that.rn_KEY_RIGHT_rn = 39;
+  that.rn_KEY_DOWN_rn = 40;
 
   $(function() {
     $(window)

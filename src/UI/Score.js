@@ -1,14 +1,14 @@
 var scoreDiv;
 var scoreSpan;
 module.exports = {
-  init: function() {
+  rn_init_rn: function() {
     scoreDiv = $(".scoreDiv");
     scoreSpan = $(".scoreDiv span")[0];
   },
-  updateScore: function(score) {
+  rn_updateScore_rn: function(score) {
     scoreSpan.innerHTML = score;
   },
-  updatePosition: function(x, y) {
+  rn_updatePosition_rn: function(x, y) {
     scoreDiv.css({
       top: y,
       left: x

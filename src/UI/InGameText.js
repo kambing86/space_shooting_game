@@ -7,7 +7,7 @@ var effectTimeline;
 var disappearEffect;
 
 module.exports = {
-  init: function() {
+  rn_init_rn: function() {
     textDiv = $(".inGameTextDiv");
     effectTimeline = new TimelineMax({
       paused: true
@@ -30,7 +30,7 @@ module.exports = {
       paused: true
     });
   },
-  setText: function(text) {
+  rn_setText_rn: function(text) {
     effectTimeline.stop();
     textDiv.css({
       opacity: 1,
@@ -44,16 +44,16 @@ module.exports = {
       ease: Linear.easeNone
     });
   },
-  disappear: function() {
+  rn_disappear_rn: function() {
     disappearEffect.play(0);
   },
-  resetScore: function() {
+  rn_resetScore_rn: function() {
     textDiv.css({
       color: "#e6262d"
     }).html("Score Reset!!");
     effectTimeline.play(0);
   },
-  bonusScore: function() {
+  rn_bonusScore_rn: function() {
     textDiv.css({
       color: "#fff500"
     }).html("Bonus Score!!");

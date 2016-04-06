@@ -2,14 +2,14 @@ var timeDiv;
 var timeSpan;
 
 module.exports = {
-  init: function() {
+  rn_init_rn: function() {
     timeDiv = $(".timeDiv");
     timeSpan = $(".timeDiv span")[0];
   },
-  updateTime: function(time) {
+  rn_updateTime_rn: function(time) {
     timeSpan.innerHTML = time;
   },
-  updatePosition: function(x, y) {
+  rn_updatePosition_rn: function(x, y) {
     timeDiv.css({
       top: y,
       right: x

@@ -16,7 +16,7 @@ const ScoreUI = require('./UI/Score');
 const TimeUI = require('./UI/Time');
 const InGameText = require('./UI/InGameText');
 const LevelSetup = require('./LevelSetup');
-const getParameter = require('./util').getParameter;
+const getParameter = require('./util').rn_getParameter_rn;
 
 $(function() {
   var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, {
@@ -28,11 +28,11 @@ $(function() {
     gameEngine = new GameEngine(stage),
     winObject = $(window);
 
-  ScoreUI.init();
-  TimeUI.init();
-  InGameText.init();
+  ScoreUI.rn_init_rn();
+  TimeUI.rn_init_rn();
+  InGameText.rn_init_rn();
 
-  Global.init(stage);
+  Global.rn_init_rn(stage);
   // stage.mask = mask;
 
   //load
@@ -63,20 +63,20 @@ $(function() {
       .add(assetList)
       .load();
 
-    Global.gameEvent.once('soundDone', function() {
+    Global.rn_gameEvent_rn.once('soundDone', function() {
       soundsLoaded.resolve();
     });
-    Global.gameEvent.once('soundFail', function() {
+    Global.rn_gameEvent_rn.once('soundFail', function() {
       soundsLoaded.reject();
     });
-    SoundManager.init();
+    SoundManager.rn_init_rn();
 
     $.when(assetsLoaded, soundsLoaded).then(function() {
       assetsLoaded = soundsLoaded = loader = assetList = null;
-      gameEngine.init();
+      gameEngine.rn_init_rn();
       // var area = new PIXI.Graphics();
       // area.beginFill(0xFFFFFF);
-      // area.drawRect(0, 0, Global.gameWidth, Global.gameHeight);
+      // area.drawRect(0, 0, Global.rn_gameWidth_rn, Global.rn_gameHeight_rn);
       // area.endFill();
       // stage.addChild(area);
 
@@ -88,9 +88,9 @@ $(function() {
       var loadingScreen = $(".loading");
       var displayText = "Level " + level + "<br/>";
       displayText += "Destroy all oncoming asteroids<br/>";
-      if (levelSetup.dbs)
+      if (levelSetup.rn_dbs_rn)
         displayText += "Avoid shooting DBS<br/>";
-      if (levelSetup.banks)
+      if (levelSetup.rn_banks_rn)
         displayText += "Shoot other banks for getting bonus points<br/>";
       displayText += "Tap on screen to start";
       var totalTime = displayText.length * 0.05;
@@ -106,8 +106,8 @@ $(function() {
             loadingScreen = null;
             loadingTweening = null;
             TweenMax.killTweensOf(loadingDivText);
-            Global.gameEvent.emit('gameStart');
-            gameEngine.start();
+            Global.rn_gameEvent_rn.emit('gameStart');
+            gameEngine.rn_start_rn();
             animate();
           });
         },
@@ -121,7 +121,7 @@ $(function() {
 
   function animate() {
     requestAnimationFrame(animate);
-    gameEngine.update();
+    gameEngine.rn_update_rn();
     renderer.render(stage);
   }
 
@@ -132,8 +132,8 @@ $(function() {
     var screenWidth, stageWidth, screenHeight, stageHeight;
     screenWidth = stageWidth = winObject.width();
     screenHeight = stageHeight = winObject.height();
-    var gameWidth = Global.gameWidth;
-    var gameHeight = Global.gameHeight;
+    var gameWidth = Global.rn_gameWidth_rn;
+    var gameHeight = Global.rn_gameHeight_rn;
     var screenRatio = gameHeight / gameWidth;
     if (stageHeight / stageWidth < screenRatio)
       stageWidth = stageHeight / screenRatio;
@@ -150,7 +150,7 @@ $(function() {
     stage.scale.x = stageWidth / gameWidth;
     stage.scale.y = stageHeight / gameHeight;
     renderer.resize(screenWidth, screenHeight);
-    ScoreUI.updatePosition(x, y);
-    TimeUI.updatePosition((screenWidth - stageWidth) / 2, y);
+    ScoreUI.rn_updatePosition_rn(x, y);
+    TimeUI.rn_updatePosition_rn((screenWidth - stageWidth) / 2, y);
   }
 });

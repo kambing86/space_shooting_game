@@ -53,6 +53,11 @@ module.exports = {
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
+      },
+      mangle: {
+        props: {
+          regex: /^rn_.+_rn$/
+        }
       }
     })
     // new ClosureCompilerPlugin({

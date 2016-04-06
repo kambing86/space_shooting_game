@@ -7,11 +7,11 @@ var instance = null;
 function SoundManager() {
   var path = "sound/";
   var sounds = {
-    laser: "laser",
-    explosion1: "explosion1",
-    explosion2: "explosion2",
-    explosion3: "explosion3",
-    music: "music"
+    rn_laser_rn: "laser",
+    rn_explosion1_rn: "explosion1",
+    rn_explosion2_rn: "explosion2",
+    rn_explosion3_rn: "explosion3",
+    rn_music_rn: "music"
   };
 
   var laserDelay = 200;
@@ -26,12 +26,12 @@ function SoundManager() {
       done++;
       if (done >= Object.keys(sounds).length) {
         done = array = null;
-        Global.gameEvent.emit('soundDone');
+        Global.rn_gameEvent_rn.emit('soundDone');
       }
     }
 
     function loadFail() {
-      Global.gameEvent.emit('soundFail');
+      Global.rn_gameEvent_rn.emit('soundFail');
     }
 
     SoundJS.on("fileload", checkDone);
@@ -46,32 +46,32 @@ function SoundManager() {
     SoundJS.registerSounds(array, path);
   })();
 
-  Global.gameEvent.on('explosion', function(x, y, big) {
+  Global.rn_gameEvent_rn.on('explosion', function(x, y, big) {
     if (big)
-      SoundJS.play(sounds.explosion2);
+      SoundJS.play(sounds.rn_explosion2_rn);
     else
-      SoundJS.play(sounds.explosion1);
+      SoundJS.play(sounds.rn_explosion1_rn);
   });
-  Global.gameEvent.on('dead', function() {
-    SoundJS.play(sounds.explosion3);
+  Global.rn_gameEvent_rn.on('dead', function() {
+    SoundJS.play(sounds.rn_explosion3_rn);
   });
-  Global.gameEvent.on('shoot', function() {
+  Global.rn_gameEvent_rn.on('shoot', function() {
     var currentTime = Date.now();
     if (lastTick && currentTime - lastTick < laserDelay) return;
     lastTick = currentTime;
-    SoundJS.play(sounds.laser, {
+    SoundJS.play(sounds.rn_laser_rn, {
       volume: laserVolume
     });
   });
-  Global.gameEvent.once('gameStart', function() {
-    SoundJS.play(sounds.music, {
+  Global.rn_gameEvent_rn.once('gameStart', function() {
+    SoundJS.play(sounds.rn_music_rn, {
       loop: -1
     });
   });
 }
 
 module.exports = {
-  init: function() {
+  rn_init_rn: function() {
     if (instance) return instance;
     instance = new SoundManager();
     return instance;

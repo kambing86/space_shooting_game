@@ -10,7 +10,7 @@ function RockManager() {
   var that = this;
   var count = 40;
 
-  var rockNames = [Assets.rock1.name, Assets.rock2.name];
+  var rockNames = [Assets.rn_rock1_rn.name, Assets.rn_rock2_rn.name];
   var totalNames = rockNames.length;
   var rocks = {};
   var updates = [];
@@ -28,14 +28,14 @@ function RockManager() {
       array = rocks[name] = [];
       for (j = 0; j < count; j++) {
         rock = new Rock(name, texture);
-        rock.init();
+        rock.rn_init_rn();
         rock.visible = false;
         array.push(rock);
       }
     }
   })();
 
-  that.addToStage = function(stage) {
+  that.rn_addToStage_rn = function(stage) {
     var name, array, i;
     for (name in rocks) {
       array = rocks[name];
@@ -65,22 +65,22 @@ function RockManager() {
     }
   }
 
-  that.init = function() {
-    Global.gameEvent.on('spawn', function() {
+  that.rn_init_rn = function() {
+    Global.rn_gameEvent_rn.on('spawn', function() {
       stopped = false;
     });
-    Global.gameEvent.on('dead', function() {
+    Global.rn_gameEvent_rn.on('dead', function() {
       stopped = true;
     });
   };
 
-  that.update = function(dt) {
+  that.rn_update_rn = function(dt) {
     for (var i = 0, l = updates.length; i < l; i++) {
       var rock = updates[i];
-      if (rock.visible && rock.y < Global.gameHeight + rock.height)
-        rock.update(dt);
+      if (rock.visible && rock.y < Global.rn_gameHeight_rn + rock.height)
+        rock.rn_update_rn(dt);
       else {
-        rocks[rock.type].push(rock);
+        rocks[rock.rn_type_rn].push(rock);
         updates.splice(i, 1);
         l--;
         i--;
@@ -89,7 +89,7 @@ function RockManager() {
     spawnRock();
   };
 
-  that.updateLevel = function(spawnConstant) {
+  that.rn_updateLevel_rn = function(spawnConstant) {
     rocksPerSecond = spawnConstant;
   };
 }

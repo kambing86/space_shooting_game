@@ -1,25 +1,25 @@
 module.exports = [{
-  rocks: 1,
-  dbs: false,
-  banks: false,
-  sparks: false,
-  target: 100
+  rn_rocks_rn: 1,
+  rn_dbs_rn: false,
+  rn_banks_rn: false,
+  rn_sparks_rn: false,
+  rn_target_rn: 100
 }, {
-  rocks: 2,
-  dbs: true,
-  banks: false,
-  sparks: false,
-  target: 500
+  rn_rocks_rn: 2,
+  rn_dbs_rn: true,
+  rn_banks_rn: false,
+  rn_sparks_rn: false,
+  rn_target_rn: 500
 }, {
-  rocks: 2,
-  dbs: true,
-  banks: true,
-  sparks: false,
-  target: 1000
+  rn_rocks_rn: 2,
+  rn_dbs_rn: true,
+  rn_banks_rn: true,
+  rn_sparks_rn: false,
+  rn_target_rn: 1000
 }, {
-  rocks: 3,
-  dbs: true,
-  banks: true,
-  sparks: true,
-  target: 1000
+  rn_rocks_rn: 3,
+  rn_dbs_rn: true,
+  rn_banks_rn: true,
+  rn_sparks_rn: true,
+  rn_target_rn: 1000
 }];

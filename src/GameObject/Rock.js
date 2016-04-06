@@ -1,7 +1,7 @@
 const PIXI = require('PIXI');
 
 const Global = require('../Global');
-const Extends = require('../util').extends;
+const Extends = require('../util').rn_extends_rn;
 const Collision = require('../Collision');
 const Assets = require('./Assets');
 
@@ -9,18 +9,18 @@ function Rock(textureName, texture) {
   var that = this;
   PIXI.Sprite.call(that, texture);
 
-  if (textureName == Assets.rock1.name)
+  if (textureName == Assets.rn_rock1_rn.name)
     that.initialLife = 4;
   else
     that.initialLife = 1;
 
-  that.type = textureName;
-  that.isBig = textureName == Assets.rock1.name;
+  that.rn_type_rn = textureName;
+  that.isBig = textureName == Assets.rn_rock1_rn.name;
 
   var speedConstant = (that.isBig) ? 2 : 4;
 
   function refresh() {
-    that.x = Global.gameWidth / 4 + (Math.random() * Global.gameWidth) / 2;
+    that.x = Global.rn_gameWidth_rn / 4 + (Math.random() * Global.rn_gameWidth_rn) / 2;
     that.y = -that.height;
     that.speedX = (Math.random() * 1 - 0.5) * 100;
     that.speedY = (1.5 + Math.random() * speedConstant) * 100;
@@ -30,31 +30,31 @@ function Rock(textureName, texture) {
 
   that.refresh = refresh;
 
-  that.init = function() {
+  that.rn_init_rn = function() {
     that.anchor.x = that.anchor.y = 0.5;
-    Collision.addGroup(that, 'rock', Collision.TYPE_CIRCLE);
+    Collision.rn_addGroup_rn(that, 'rock', Collision.rn_TYPE_CIRCLE_rn);
     refresh();
   };
 
-  that.update = function(dt) {
+  that.rn_update_rn = function(dt) {
     that.x += that.speedX * dt;
     that.y += that.speedY * dt;
-    if (that.y > Global.gameHeight + that.height) {
+    if (that.y > Global.rn_gameHeight_rn + that.height) {
       that.visible = false;
       return;
     }
-    var target = Collision.isCollide(that, 'bullet');
+    var target = Collision.rn_isCollide_rn(that, 'bullet');
     that.rotation += that.speedRotation * dt;
     if (target) {
       target.visible = false;
       that.life--;
       if (that.life > 0) return;
       that.visible = false;
-      Global.gameEvent.emit('explosion', that.x, that.y, that.isBig);
+      Global.rn_gameEvent_rn.emit('explosion', that.x, that.y, that.isBig);
       if (that.isBig)
-        Global.gameEvent.emit('score', 30);
+        Global.rn_gameEvent_rn.emit('score', 30);
       else
-        Global.gameEvent.emit('score', 10);
+        Global.rn_gameEvent_rn.emit('score', 10);
     }
   };
 }

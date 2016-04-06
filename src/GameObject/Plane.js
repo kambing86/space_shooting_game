@@ -3,7 +3,7 @@ const TweenMax = require('TweenMax');
 const TimelineMax = require('TimelineMax');
 
 const Global = require('../Global');
-const Extends = require('../util').extends;
+const Extends = require('../util').rn_extends_rn;
 const Collision = require('../Collision');
 
 function Plane(texture) {
@@ -16,7 +16,7 @@ function Plane(texture) {
 
   var isDown = false;
 
-  that.maxX = Global.gameWidth - that.width / 2;
+  that.maxX = Global.rn_gameWidth_rn - that.width / 2;
   that.minX = that.width / 2;
 
   var timeline;
@@ -38,7 +38,7 @@ function Plane(texture) {
 
   function spawn() {
     that.scale.x = that.scale.y = 1;
-    that.y = Global.gameHeight;
+    that.y = Global.rn_gameHeight_rn;
     if (timeline) {
       timeline.play(0);
       return;
@@ -57,15 +57,15 @@ function Plane(texture) {
       y: y2,
       onComplete: function() {
         stopped = false;
-        Global.gameEvent.emit('spawn');
+        Global.rn_gameEvent_rn.emit('spawn');
       }
     }), 0.5);
   }
 
-  that.init = function() {
+  that.rn_init_rn = function() {
     that.anchor.x = that.anchor.y = 0.5;
-    that.x = Global.gameWidth / 2;
-    Global.Input
+    that.x = Global.rn_gameWidth_rn / 2;
+    Global.rn_Input_rn
       .on('mousedown', onPointerDown)
       .on('touchstart', onPointerDown)
       .on('mouseup', onPointerUp)
@@ -75,15 +75,15 @@ function Plane(texture) {
       .on('mousemove', onPointerMove)
       .on('touchmove', onPointerMove);
     that.scale.x = that.scale.y = 0.5;
-    Collision.addGroup(that, 'plane', Collision.TYPE_CIRCLE, {
+    Collision.rn_addGroup_rn(that, 'plane', Collision.rn_TYPE_CIRCLE_rn, {
       width: that.width - 10,
       height: that.height - 10
     });
   };
 
-  that.start = spawn;
+  that.rn_start_rn = spawn;
 
-  that.update = function(dt) {
+  that.rn_update_rn = function(dt) {
     if (!that.visible) {
       if (Date.now() - deathTime >= 5000) {
         that.visible = true;
@@ -92,6 +92,7 @@ function Plane(texture) {
         return;
     }
     if (stopped) return;
+    var moving = isDown;
     if (moveToPosition) {
       if (that.x != moveToPosition.x) {
         var moveToX = moveToPosition.x;
@@ -99,10 +100,12 @@ function Plane(texture) {
         that.x += (that.x < moveToX) ? distance : -distance;
       }
     } else {
-      var keyLeft = Global.Input.isDown(Global.Input.KEY_LEFT);
-      var keyRight = Global.Input.isDown(Global.Input.KEY_RIGHT);
-      if (keyLeft || keyRight)
+      var keyLeft = Global.rn_Input_rn.isDown(Global.rn_Input_rn.rn_KEY_LEFT_rn);
+      var keyRight = Global.rn_Input_rn.isDown(Global.rn_Input_rn.rn_KEY_RIGHT_rn);
+      if (keyLeft || keyRight) {
         that.x += (keyLeft ? -1 : 1) * speed * dt;
+        moving = true;
+      }
     }
 
     //check position
@@ -111,18 +114,19 @@ function Plane(texture) {
     else if (that.x < that.minX)
       that.x = that.minX;
 
-    Global.gameEvent.emit('shoot', that.x, that.y);
+    if (moving)
+      Global.rn_gameEvent_rn.emit('shoot', that.x, that.y);
 
     //check collision with rock
-    var target = Collision.isCollide(that, 'rock');
+    var target = Collision.rn_isCollide_rn(that, 'rock');
     if (target) {
       target.visible = false;
       that.visible = false;
       deathTime = Date.now();
-      Global.gameEvent.emit('dead');
-      Global.gameEvent.emit('gameover');
-      Global.gameEvent.emit('explosion', target.x, target.y, target.isBig);
-      Global.gameEvent.emit('explosion', that.x, that.y);
+      Global.rn_gameEvent_rn.emit('dead');
+      Global.rn_gameEvent_rn.emit('gameover');
+      Global.rn_gameEvent_rn.emit('explosion', target.x, target.y, target.isBig);
+      Global.rn_gameEvent_rn.emit('explosion', that.x, that.y);
       stopped = true;
     }
   };

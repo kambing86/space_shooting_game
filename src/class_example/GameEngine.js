@@ -6,7 +6,7 @@
 //     this[width] = gameWidth;
 //     this[height] = gameHeight;
 //   }
-//   update() {
+//   rn_update_rn() {
 //   }
 // }
 function GameEngine(gameWidth, gameHeight) {
@@ -14,7 +14,7 @@ function GameEngine(gameWidth, gameHeight) {
   var width = gameWidth;
   var height = gameHeight;
 
-  that.update = function() {
+  that.rn_update_rn = function() {
 
   };
 }

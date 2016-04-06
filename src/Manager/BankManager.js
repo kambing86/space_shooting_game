@@ -12,9 +12,9 @@ function BankManager(gotDbs, gotBanks) {
 
   var bankNames = [];
   if (gotDbs)
-    bankNames.push(Assets.dbs.name);
+    bankNames.push(Assets.rn_dbs_rn.name);
   if (gotBanks) {
-    bankNames.push(Assets.standard.name, Assets.uob.name);
+    bankNames.push(Assets.rn_standard_rn.name, Assets.rn_uob_rn.name);
   }
   var totalNames = bankNames.length;
   var banks = {};
@@ -29,14 +29,14 @@ function BankManager(gotDbs, gotBanks) {
       array = banks[name] = [];
       for (j = 0; j < count; j++) {
         bank = new Bank(name, texture);
-        bank.init();
+        bank.rn_init_rn();
         bank.visible = false;
         array.push(bank);
       }
     }
   })();
 
-  that.addToStage = function(stage) {
+  that.rn_addToStage_rn = function(stage) {
     var name, array, i;
     for (name in banks) {
       array = banks[name];
@@ -62,15 +62,15 @@ function BankManager(gotDbs, gotBanks) {
     }
   }
 
-  that.init = function() {};
+  that.rn_init_rn = function() {};
 
-  that.update = function(dt) {
+  that.rn_update_rn = function(dt) {
     for (var i = 0, l = updates.length; i < l; i++) {
       var bank = updates[i];
-      if (bank.visible && bank.y < Global.gameHeight + bank.height)
-        bank.update(dt);
+      if (bank.visible && bank.y < Global.rn_gameHeight_rn + bank.height)
+        bank.rn_update_rn(dt);
       else {
-        banks[bank.type].push(bank);
+        banks[bank.rn_type_rn].push(bank);
         updates.splice(i, 1);
         l--;
         i--;

@@ -23,11 +23,11 @@ function BulletManager(texture) {
       bullet.anchor.x = bullet.anchor.y = 0.5;
       bullet.visible = false;
       bullets.push(bullet);
-      Collision.addGroup(bullet, 'bullet');
+      Collision.rn_addGroup_rn(bullet, 'bullet');
     }
   })();
 
-  that.addToStage = function(stage) {
+  that.rn_addToStage_rn = function(stage) {
     var i;
     for (i = 0; i < count; i++)
       stage.addChild(bullets[i]);
@@ -44,11 +44,11 @@ function BulletManager(texture) {
     bullet.visible = true;
   }
 
-  that.init = function() {
-    Global.gameEvent.on('shoot', shoot);
+  that.rn_init_rn = function() {
+    Global.rn_gameEvent_rn.on('shoot', shoot);
   };
 
-  that.update = function(dt) {
+  that.rn_update_rn = function(dt) {
     for (var i = 0, l = updates.length; i < l; i++) {
       var bullet = updates[i];
       bullet.y -= speed * dt;

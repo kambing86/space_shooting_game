@@ -2,7 +2,7 @@ const PIXI = require('PIXI');
 
 const Global = require('../Global');
 const Assets = require('../GameObject/Assets');
-const JsonToArray = require('../util').json2Array;
+const JsonToArray = require('../util').rn_json2Array_rn;
 
 var instance = null;
 
@@ -11,10 +11,10 @@ function ExplosionManager() {
 
   var explosions = {};
   var types = [{
-    name: Assets.explosion1.name,
+    name: Assets.rn_explosion1_rn.name,
     count: 10
   }, {
-    name: Assets.explosion2.name,
+    name: Assets.rn_explosion2_rn.name,
     count: 20
   }];
 
@@ -31,14 +31,14 @@ function ExplosionManager() {
         explosion = new PIXI.extras.MovieClip(textures);
         explosion.anchor.x = explosion.anchor.y = 0.5;
         explosion.loop = false;
-        explosion.type = type;
+        explosion.rn_type_rn = type;
         if (i == 0) {
           explosion.animationSpeed = 0.5;
           explosion.scale.x = explosion.scale.y = 2;
         }
         explosion.onComplete = function() {
           this.visible = false;
-          explosions[this.type].push(this);
+          explosions[this.rn_type_rn].push(this);
         };
         explosion.visible = false;
         array.push(explosion);
@@ -46,7 +46,7 @@ function ExplosionManager() {
     }
   })();
 
-  that.addToStage = function(stage) {
+  that.rn_addToStage_rn = function(stage) {
     var name, array, i, count;
     for (name in explosions) {
       array = explosions[name];
@@ -56,7 +56,7 @@ function ExplosionManager() {
     }
   };
 
-  Global.gameEvent.on('explosion', function(x, y, big) {
+  Global.rn_gameEvent_rn.on('explosion', function(x, y, big) {
     var type;
     if (big)
       type = types[0].name;

@@ -1,42 +1,46 @@
 module.exports = {
-  plane: {
+  rn_plane_rn: {
     name: "plane",
     url: "redfighter.png"
   },
-  bg: {
+  rn_bg_rn: {
     name: "bg",
     url: "spacebg.jpg"
   },
-  rock1: {
+  rn_rock1_rn: {
     name: "rock1",
     url: "rock1.png"
   },
-  rock2: {
+  rn_rock2_rn: {
     name: "rock2",
     url: "rock2.png"
   },
-  bullet: {
+  rn_bullet_rn: {
     name: "bullet",
     url: "bullet.png"
   },
-  explosion1: {
+  rn_explosion1_rn: {
     name: "explosion1",
     url: "explosion1.json"
   },
-  explosion2: {
+  rn_explosion2_rn: {
     name: "explosion2",
     url: "explosion2.json"
   },
-  dbs: {
+  rn_dbs_rn: {
     name: "dbs",
     url: "dbs.png"
   },
-  standard: {
+  rn_standard_rn: {
     name: "standard",
     url: "standard.png"
   },
-  uob: {
+  rn_uob_rn: {
     name: "uob",
     url: "uob.png"
+  },
+  rn_spark_rn: {
+    name: "spark",
+    url: "spark.json"
   }
 };

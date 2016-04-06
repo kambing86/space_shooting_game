@@ -1,7 +1,7 @@
 const PIXI = require('PIXI');
 
 const Global = require('../Global');
-const Extends = require('../util').extends;
+const Extends = require('../util').rn_extends_rn;
 
 function Background(texture, plane) {
   var that = this;
@@ -13,14 +13,14 @@ function Background(texture, plane) {
   var minX = plane.minX;
   var planeMovableWidth = plane.maxX - minX;
 
-  that.init = function() {
+  that.rn_init_rn = function() {
     var sprite = new PIXI.Sprite(texture);
     that.addChild(sprite);
     resetHeight = sprite.height;
     sprite = new PIXI.Sprite(texture);
     sprite.y = -resetHeight;
     that.addChild(sprite);
-    that.scale.x = that.scale.y = Global.gameHeight / resetHeight;
+    that.scale.x = that.scale.y = Global.rn_gameHeight_rn / resetHeight;
     resetHeight = that.height / 2;
     // var widthForGame = that.width;
     for (var i = 0; i < 4; i++) {
@@ -33,7 +33,7 @@ function Background(texture, plane) {
     movableWidth = 50;
   };
 
-  that.update = function(dt) {
+  that.rn_update_rn = function(dt) {
     that.y += speedY * dt;
     if (that.y > resetHeight)
       that.y -= resetHeight;

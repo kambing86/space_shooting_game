@@ -1,13 +1,11 @@
 const EventEmitter = require('eventemitter3');
 const Input = require('./Input');
 module.exports = {
-  init: function(stage) {
-    this.gameStage = stage;
-    this.Input = new Input(stage);
+  rn_init_rn: function(stage) {
+    this.rn_Input_rn = new Input(stage);
   },
-  gameStage: null,
-  gameWidth: 500,
-  gameHeight: 800,
-  gameEvent: new EventEmitter(),
-  Input: null
+  rn_gameWidth_rn: 500,
+  rn_gameHeight_rn: 800,
+  rn_gameEvent_rn: new EventEmitter(),
+  rn_Input_rn: null
 };
