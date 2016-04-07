@@ -22,13 +22,13 @@ function Rock(textureName, texture) {
   function refresh() {
     that.x = Global.rn_gameWidth_rn / 4 + (Math.random() * Global.rn_gameWidth_rn) / 2;
     that.y = -that.height;
-    that.speedX = (Math.random() * 1 - 0.5) * 100;
-    that.speedY = (1.5 + Math.random() * speedConstant) * 100;
-    that.speedRotation = (Math.random() * 1 - 0.5) * 10;
-    that.life = that.initialLife;
+    that.rn_speedX_rn = (Math.random() * 1 - 0.5) * 100;
+    that.rn_speedY_rn = (1.5 + Math.random() * speedConstant) * 100;
+    that.rn_speedRotation_rn = (Math.random() * 1 - 0.5) * 10;
+    that.rn_life_rn = that.initialLife;
   }
 
-  that.refresh = refresh;
+  that.rn_refresh_rn = refresh;
 
   that.rn_init_rn = function() {
     that.anchor.x = that.anchor.y = 0.5;
@@ -37,18 +37,18 @@ function Rock(textureName, texture) {
   };
 
   that.rn_update_rn = function(dt) {
-    that.x += that.speedX * dt;
-    that.y += that.speedY * dt;
+    that.x += that.rn_speedX_rn * dt;
+    that.y += that.rn_speedY_rn * dt;
     if (that.y > Global.rn_gameHeight_rn + that.height) {
       that.visible = false;
       return;
     }
     var target = Collision.rn_isCollide_rn(that, 'bullet');
-    that.rotation += that.speedRotation * dt;
+    that.rotation += that.rn_speedRotation_rn * dt;
     if (target) {
       target.visible = false;
-      that.life--;
-      if (that.life > 0) return;
+      that.rn_life_rn--;
+      if (that.rn_life_rn > 0) return;
       that.visible = false;
       Global.rn_gameEvent_rn.emit('explosion', that.x, that.y, that.isBig);
       if (that.isBig)

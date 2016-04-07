@@ -41,6 +41,6 @@ module.exports = {
   },
   rn_spark_rn: {
     name: "spark",
-    url: "spark.json"
+    url: "spark.png"
   }
 };

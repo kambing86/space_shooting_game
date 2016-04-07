@@ -129,6 +129,13 @@ function Plane(texture) {
       Global.rn_gameEvent_rn.emit('explosion', that.x, that.y);
       stopped = true;
     }
+
+    target = Collision.rn_isCollide_rn(that, 'spark');
+    if (target) {
+      target.visible = false;
+      Global.rn_gameEvent_rn.emit('score', 100);
+      Global.rn_gameEvent_rn.emit('bonus');
+    }
   };
 }
 Extends(Plane, PIXI.Sprite);

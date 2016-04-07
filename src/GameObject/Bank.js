@@ -14,23 +14,23 @@ function Bank(textureName, texture) {
   var initialLife = 10;
   var speedConstant = 1;
 
-  that.refresh = function() {
+  that.rn_refresh_rn = function() {
     that.x = Global.rn_gameWidth_rn / 4 + (Math.random() * Global.rn_gameWidth_rn) / 2;
     that.y = -that.height;
-    that.speedX = (Math.random() * 1 - 0.5) * 100;
-    that.speedY = (1.5 + Math.random() * speedConstant) * 100;
-    that.life = initialLife;
+    that.rn_speedX_rn = (Math.random() * 1 - 0.5) * 100;
+    that.rn_speedY_rn = (1.5 + Math.random() * speedConstant) * 100;
+    that.rn_life_rn = initialLife;
   };
 
   that.rn_init_rn = function() {
     that.anchor.x = that.anchor.y = 0.5;
-    that.refresh();
+    that.rn_refresh_rn();
     Collision.rn_addGroup_rn(that, 'bank');
   };
 
   that.rn_update_rn = function(dt) {
-    that.x += that.speedX * dt;
-    that.y += that.speedY * dt;
+    that.x += that.rn_speedX_rn * dt;
+    that.y += that.rn_speedY_rn * dt;
     if (that.y > Global.rn_gameHeight_rn + that.height) {
       that.visible = false;
       return;
@@ -38,8 +38,8 @@ function Bank(textureName, texture) {
     var target = Collision.rn_isCollide_rn(that, 'bullet');
     if (target) {
       target.visible = false;
-      that.life--;
-      if (that.life > 0) return;
+      that.rn_life_rn--;
+      if (that.rn_life_rn > 0) return;
       that.visible = false;
       Global.rn_gameEvent_rn.emit('explosion', that.x, that.y, true);
       if (textureName == Assets.rn_dbs_rn.name)

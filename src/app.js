@@ -92,6 +92,8 @@ $(function() {
         displayText += "Avoid shooting DBS<br/>";
       if (levelSetup.rn_banks_rn)
         displayText += "Shoot other banks for getting bonus points<br/>";
+      if (levelSetup.rn_sparks_rn)
+        displayText += "Get the sparks for more bonus points<br/>";
       displayText += "Tap on screen to start";
       var totalTime = displayText.length * 0.05;
       var delay = loadingTweening.duration() * (1 - loadingTweening.progress());

@@ -11,11 +11,11 @@ function ExplosionManager() {
 
   var explosions = {};
   var types = [{
-    name: Assets.rn_explosion1_rn.name,
-    count: 10
+    rn_name_rn: Assets.rn_explosion1_rn.name,
+    rn_count_rn: 10
   }, {
-    name: Assets.rn_explosion2_rn.name,
-    count: 20
+    rn_name_rn: Assets.rn_explosion2_rn.name,
+    rn_count_rn: 20
   }];
 
   (function() {
@@ -23,8 +23,8 @@ function ExplosionManager() {
     var i, j, type, count, textures, array, explosion;
     var resources = PIXI.loader.resources;
     for (i = 0; i < totalNames; i++) {
-      type = types[i].name;
-      count = types[i].count;
+      type = types[i].rn_name_rn;
+      count = types[i].rn_count_rn;
       textures = JsonToArray(resources[type].textures);
       array = explosions[type] = [];
       for (j = 0; j < count; j++) {
@@ -59,9 +59,9 @@ function ExplosionManager() {
   Global.rn_gameEvent_rn.on('explosion', function(x, y, big) {
     var type;
     if (big)
-      type = types[0].name;
+      type = types[0].rn_name_rn;
     else
-      type = types[1].name;
+      type = types[1].rn_name_rn;
     var explosion = explosions[type].pop();
     if (explosion) {
       explosion.rotation = ((Math.random() > 0.5) ? -1 : 1) * Math.random() * Math.PI;

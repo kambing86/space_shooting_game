@@ -63,13 +63,14 @@ var Collision = {
       groups[group] = [instance];
   },
   rn_isCollide_rn: function(instance, group) {
+    var array = groups[group];
+    if (array == undefined) return;
     if (!instance.visible) return;
     var width1 = instance.rn_collisionArea_rn.width;
     var height1 = instance.rn_collisionArea_rn.height;
     var x1 = instance.x + (0.5 - instance.anchor.x) * width1;
     var y1 = instance.y + (0.5 - instance.anchor.y) * height1;
     var type1 = instance.rn_collisionType_rn;
-    var array = groups[group];
     var target, width2, height2, x2, y2, type2;
     for (var i = 0, l = array.length; i < l; i++) {
       target = array[i];

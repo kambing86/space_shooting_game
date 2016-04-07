@@ -7,6 +7,7 @@ const Plane = require('./GameObject/Plane');
 const BulletManager = require('./Manager/BulletManager');
 const RockManager = require('./Manager/RockManager');
 const BankManager = require('./Manager/BankManager');
+const Spark = require('./GameObject/Spark');
 const ExplosionManager = require('./Manager/ExplosionManager');
 const ScoreUI = require('./UI/Score');
 const TimeUI = require('./UI/Time');
@@ -31,6 +32,9 @@ function GameEngine(stage) {
 
   var bankSpawnConstant = 8000;
   var bankTick;
+
+  var spawnSpark = false;
+  var spark;
 
   var levelSetup;
   var target = 0;
@@ -65,6 +69,7 @@ function GameEngine(stage) {
       return;
     }
     target = levelSetup.rn_target_rn;
+    spawnSpark = levelSetup.rn_sparks_rn;
 
     var resources = PIXI.loader.resources;
 
@@ -77,6 +82,9 @@ function GameEngine(stage) {
     rocks = RockManager.getInstance();
     banks = BankManager.getInstance(levelSetup.rn_dbs_rn, levelSetup.rn_banks_rn);
 
+    if (spawnSpark)
+      spark = new Spark(resources[Assets.rn_spark_rn.name].texture);
+
     var explosions = ExplosionManager.getInstance();
 
     stage.addChild(bg);
@@ -84,12 +92,16 @@ function GameEngine(stage) {
     bullets.rn_addToStage_rn(stage);
     rocks.rn_addToStage_rn(stage);
     banks.rn_addToStage_rn(stage);
+    if (spawnSpark)
+      stage.addChild(spark);
     explosions.rn_addToStage_rn(stage);
 
     gameObjectList.push(plane);
     gameObjectList.push(bg);
     gameObjectList.push(bullets);
     gameObjectList.push(rocks);
+    if (spawnSpark)
+      gameObjectList.push(spark);
     gameObjectList.push(banks);
 
     for (var i = 0, l = gameObjectList.length; i < l; i++)
@@ -141,6 +153,10 @@ function GameEngine(stage) {
       TimeUI.rn_updateTime_rn(timeLimit);
       if (timeLimit == 0)
         Global.rn_gameEvent_rn.emit('gameover');
+    }
+    if (spawnSpark && timeLimit % 20 == 0 && !spark.visible) {
+      spark.visible = true;
+      spark.rn_refresh_rn();
     }
     lastTick = currentTime;
   };

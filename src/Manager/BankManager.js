@@ -52,11 +52,8 @@ function BankManager(gotDbs, gotBanks) {
     var bank;
     while (!bank) {
       bank = banks[name].pop();
-      if (!bank) {
-        name = (name + 1) % totalNames;
-        return;
-      }
-      bank.refresh();
+      if (!bank) return;
+      bank.rn_refresh_rn();
       updates.push(bank);
       bank.visible = true;
     }

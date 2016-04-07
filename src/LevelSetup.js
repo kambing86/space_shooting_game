@@ -21,5 +21,5 @@ module.exports = [{
   rn_dbs_rn: true,
   rn_banks_rn: true,
   rn_sparks_rn: true,
-  rn_target_rn: 1000
+  rn_target_rn: 2000
 }];

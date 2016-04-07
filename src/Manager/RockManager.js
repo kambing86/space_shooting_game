@@ -55,11 +55,8 @@ function RockManager() {
     var rock;
     while (!rock) {
       rock = rocks[name].pop();
-      if (!rock) {
-        name = (name + 1) % totalNames;
-        return;
-      }
-      rock.refresh();
+      if (!rock) return;
+      rock.rn_refresh_rn();
       updates.push(rock);
       rock.visible = true;
     }
