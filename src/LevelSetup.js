@@ -6,8 +6,8 @@ module.exports = [{
   rn_target_rn: 100
 }, {
   rn_rocks_rn: 2,
-  rn_dbs_rn: true,
-  rn_banks_rn: false,
+  rn_dbs_rn: false,
+  rn_banks_rn: true,
   rn_sparks_rn: false,
   rn_target_rn: 500
 }, {
