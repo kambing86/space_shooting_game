@@ -1,6 +1,8 @@
 const PIXI = require('PIXI');
 
 const Global = require('../Global');
+const gameEvent = Global.rn_gameEvent_rn;
+const gameEventName = Global.rn_gameEventName_rn;
 const Assets = require('../GameObject/Assets');
 const Rock = require('../GameObject/Rock');
 
@@ -45,6 +47,7 @@ function RockManager() {
   };
 
   function spawnRock() {
+    if (!totalNames) return;
     var currentTime = Date.now();
     if (stopped ||
       updates.length > totalNames * count ||
@@ -55,7 +58,10 @@ function RockManager() {
     var rock;
     while (!rock) {
       rock = rocks[name].pop();
-      if (!rock) return;
+      if (!rock) {
+        name = rockNames[Math.floor(Math.random() * totalNames)];
+        continue;
+      }
       rock.rn_refresh_rn();
       updates.push(rock);
       rock.visible = true;
@@ -63,10 +69,10 @@ function RockManager() {
   }
 
   that.rn_init_rn = function() {
-    Global.rn_gameEvent_rn.on('spawn', function() {
+    gameEvent.on(gameEventName.rn_spawn_rn, function() {
       stopped = false;
     });
-    Global.rn_gameEvent_rn.on('dead', function() {
+    gameEvent.on(gameEventName.rn_dead_rn, function() {
       stopped = true;
     });
   };

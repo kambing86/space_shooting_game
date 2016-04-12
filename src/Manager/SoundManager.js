@@ -1,6 +1,7 @@
 const SoundJS = require('SoundJS');
 
-const Global = require('../Global');
+const gameEvent = require('../Global').rn_gameEvent_rn;
+const gameEventName = require('../Global').rn_gameEventName_rn;
 
 var instance = null;
 
@@ -26,12 +27,12 @@ function SoundManager() {
       done++;
       if (done >= Object.keys(sounds).length) {
         done = array = null;
-        Global.rn_gameEvent_rn.emit('soundDone');
+        gameEvent.emit(gameEventName.rn_soundDone_rn);
       }
     }
 
     function loadFail() {
-      Global.rn_gameEvent_rn.emit('soundFail');
+      gameEvent.emit(gameEventName.rn_soundFail_rn);
     }
 
     SoundJS.on("fileload", checkDone);
@@ -46,16 +47,16 @@ function SoundManager() {
     SoundJS.registerSounds(array, path);
   })();
 
-  Global.rn_gameEvent_rn.on('explosion', function(x, y, big) {
+  gameEvent.on(gameEventName.rn_explosion_rn, function(x, y, big) {
     if (big)
       SoundJS.play(sounds.rn_explosion2_rn);
     else
       SoundJS.play(sounds.rn_explosion1_rn);
   });
-  Global.rn_gameEvent_rn.on('dead', function() {
+  gameEvent.on(gameEventName.rn_dead_rn, function() {
     SoundJS.play(sounds.rn_explosion3_rn);
   });
-  Global.rn_gameEvent_rn.on('shoot', function() {
+  gameEvent.on(gameEventName.rn_shoot_rn, function() {
     var currentTime = Date.now();
     if (lastTick && currentTime - lastTick < laserDelay) return;
     lastTick = currentTime;
@@ -63,7 +64,7 @@ function SoundManager() {
       volume: laserVolume
     });
   });
-  Global.rn_gameEvent_rn.once('gameStart', function() {
+  gameEvent.once(gameEventName.rn_gameStart_rn, function() {
     SoundJS.play(sounds.rn_music_rn, {
       loop: -1
     });

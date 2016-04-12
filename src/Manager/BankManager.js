@@ -8,13 +8,23 @@ var instance = null;
 
 function BankManager(gotDbs, gotBanks) {
   var that = this;
-  var count = 2;
+  var count = 1;
 
   var bankNames = [];
   if (gotDbs)
     bankNames.push(Assets.rn_dbs_rn.name);
   if (gotBanks) {
-    bankNames.push(Assets.rn_standard_rn.name, Assets.rn_uob_rn.name);
+    bankNames.push(
+      Assets.rn_standard_rn.name,
+      Assets.rn_uob_rn.name,
+      Assets.rn_paypal_rn.name,
+      Assets.rn_stripe_rn.name,
+      Assets.rn_square_rn.name,
+      Assets.rn_alipay_rn.name,
+      Assets.rn_apple_rn.name,
+      Assets.rn_citi_rn.name,
+      Assets.rn_ocbc_rn.name
+    );
   }
   var totalNames = bankNames.length;
   var banks = {};
@@ -48,7 +58,8 @@ function BankManager(gotDbs, gotBanks) {
   function spawnBank() {
     if (!totalNames) return;
     if (updates.length > totalNames * count) return;
-    var name = bankNames[Math.floor(Math.random() * totalNames)];
+    var name = bankNames.splice(Math.floor(Math.random() * totalNames), 1);
+    totalNames--;
     var bank;
     while (!bank) {
       bank = banks[name].pop();

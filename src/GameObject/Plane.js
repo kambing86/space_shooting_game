@@ -3,6 +3,8 @@ const TweenMax = require('TweenMax');
 const TimelineMax = require('TimelineMax');
 
 const Global = require('../Global');
+const gameEvent = Global.rn_gameEvent_rn;
+const gameEventName = Global.rn_gameEventName_rn;
 const Extends = require('../util').rn_extends_rn;
 const Collision = require('../Collision');
 
@@ -57,7 +59,7 @@ function Plane(texture) {
       y: y2,
       onComplete: function() {
         stopped = false;
-        Global.rn_gameEvent_rn.emit('spawn');
+        gameEvent.emit(gameEventName.rn_spawn_rn);
       }
     }), 0.5);
   }
@@ -115,7 +117,7 @@ function Plane(texture) {
       that.x = that.minX;
 
     if (moving)
-      Global.rn_gameEvent_rn.emit('shoot', that.x, that.y);
+      gameEvent.emit(gameEventName.rn_shoot_rn, that.x, that.y);
 
     //check collision with rock
     var target = Collision.rn_isCollide_rn(that, 'rock');
@@ -123,18 +125,19 @@ function Plane(texture) {
       target.visible = false;
       that.visible = false;
       deathTime = Date.now();
-      Global.rn_gameEvent_rn.emit('dead');
-      Global.rn_gameEvent_rn.emit('gameover');
-      Global.rn_gameEvent_rn.emit('explosion', target.x, target.y, target.isBig);
-      Global.rn_gameEvent_rn.emit('explosion', that.x, that.y);
+      gameEvent.emit(gameEventName.rn_dead_rn);
+      gameEvent.emit(gameEventName.rn_gameover_rn);
+      gameEvent.emit(gameEventName.rn_explosion_rn, target.x, target.y, target.isBig);
+      gameEvent.emit(gameEventName.rn_explosion_rn, that.x, that.y);
       stopped = true;
     }
 
     target = Collision.rn_isCollide_rn(that, 'spark');
     if (target) {
       target.visible = false;
-      Global.rn_gameEvent_rn.emit('score', 100);
-      Global.rn_gameEvent_rn.emit('bonus');
+      var score = 100;
+      gameEvent.emit(gameEventName.rn_score_rn, score);
+      gameEvent.emit(gameEventName.rn_bonus_rn, score);
     }
   };
 }

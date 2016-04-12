@@ -1,6 +1,7 @@
 const PIXI = require('PIXI');
 
-const Global = require('../Global');
+const gameEvent = require('../Global').rn_gameEvent_rn;
+const gameEventName = require('../Global').rn_gameEventName_rn;
 const Collision = require('../Collision');
 
 var instance = null;
@@ -45,7 +46,7 @@ function BulletManager(texture) {
   }
 
   that.rn_init_rn = function() {
-    Global.rn_gameEvent_rn.on('shoot', shoot);
+    gameEvent.on(gameEventName.rn_shoot_rn, shoot);
   };
 
   that.rn_update_rn = function(dt) {

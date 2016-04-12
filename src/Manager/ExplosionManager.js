@@ -1,6 +1,7 @@
 const PIXI = require('PIXI');
 
-const Global = require('../Global');
+const gameEvent = require('../Global').rn_gameEvent_rn;
+const gameEventName = require('../Global').rn_gameEventName_rn;
 const Assets = require('../GameObject/Assets');
 const JsonToArray = require('../util').rn_json2Array_rn;
 
@@ -56,7 +57,7 @@ function ExplosionManager() {
     }
   };
 
-  Global.rn_gameEvent_rn.on('explosion', function(x, y, big) {
+  gameEvent.on(gameEventName.rn_explosion_rn, function(x, y, big) {
     var type;
     if (big)
       type = types[0].rn_name_rn;

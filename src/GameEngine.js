@@ -1,6 +1,7 @@
 const PIXI = require('PIXI');
 
-const Global = require('./Global');
+const gameEvent = require('./Global').rn_gameEvent_rn;
+const gameEventName = require('./Global').rn_gameEventName_rn;
 const Assets = require('./GameObject/Assets');
 const Background = require('./GameObject/Background');
 const Plane = require('./GameObject/Plane');
@@ -46,9 +47,9 @@ function GameEngine(stage) {
   }
 
   function resetScore() {
+    InGameText.rn_resetScore_rn(currentScore);
     currentScore = 0;
     ScoreUI.rn_updateScore_rn(currentScore);
-    InGameText.rn_resetScore_rn();
   }
 
   function postMessage() {
@@ -107,16 +108,16 @@ function GameEngine(stage) {
     for (var i = 0, l = gameObjectList.length; i < l; i++)
       gameObjectList[i].rn_init_rn();
 
-    Global.rn_gameEvent_rn.on('score', addScore);
-    Global.rn_gameEvent_rn.on('bonus', function() {
-      InGameText.rn_bonusScore_rn();
+    gameEvent.on(gameEventName.rn_score_rn, addScore);
+    gameEvent.on(gameEventName.rn_bonus_rn, function(score) {
+      InGameText.rn_bonusScore_rn(score);
     });
-    Global.rn_gameEvent_rn.on('resetscore', resetScore);
-    Global.rn_gameEvent_rn.once('spawn', function() {
+    gameEvent.on(gameEventName.rn_resetscore_rn, resetScore);
+    gameEvent.once(gameEventName.rn_spawn_rn, function() {
       updateTimerTick = Date.now();
       InGameText.rn_disappear_rn();
     });
-    Global.rn_gameEvent_rn.once('gameover', function() {
+    gameEvent.once(gameEventName.rn_gameover_rn, function() {
       stopped = true;
       if (currentScore >= target)
         InGameText.rn_setText_rn("MISSION SUCCESS");
@@ -152,7 +153,7 @@ function GameEngine(stage) {
       timeLimit--;
       TimeUI.rn_updateTime_rn(timeLimit);
       if (timeLimit == 0)
-        Global.rn_gameEvent_rn.emit('gameover');
+        gameEvent.emit(gameEventName.rn_gameover_rn);
     }
     if (spawnSpark && timeLimit % 20 == 0 && !spark.visible) {
       spark.visible = true;

@@ -63,10 +63,10 @@ $(function() {
       .add(assetList)
       .load();
 
-    Global.rn_gameEvent_rn.once('soundDone', function() {
+    Global.rn_gameEvent_rn.once(Global.rn_gameEventName_rn.rn_soundDone_rn, function() {
       soundsLoaded.resolve();
     });
-    Global.rn_gameEvent_rn.once('soundFail', function() {
+    Global.rn_gameEvent_rn.once(Global.rn_gameEventName_rn.rn_soundFail_rn, function() {
       soundsLoaded.reject();
     });
     SoundManager.rn_init_rn();
@@ -87,11 +87,18 @@ $(function() {
 
       var loadingScreen = $(".loading");
       var displayText = "Level " + level + "<br/>";
-      displayText += "Destroy all oncoming asteroids<br/>";
+      if (parseInt(level) <= 2) {
+        displayText += "Destroy all oncoming asteroids<br/>";
+        if (levelSetup.rn_banks_rn)
+          displayText += "Shoot down the competition for bonus points<br/>";
+      } else {
+        if (levelSetup.rn_banks_rn)
+          displayText += "Destroy all oncoming asteroids and the competition<br/>";
+        else
+          displayText += "Destroy all oncoming asteroids<br/>";
+      }
       if (levelSetup.rn_dbs_rn)
-        displayText += "Avoid shooting DBS<br/>";
-      if (levelSetup.rn_banks_rn)
-        displayText += "Shoot other banks for getting bonus points<br/>";
+        displayText += "Avoid shooting DBS!<br/>";
       if (levelSetup.rn_sparks_rn)
         displayText += "Get the sparks for more bonus points<br/>";
       displayText += "Tap on screen to start";
@@ -108,7 +115,7 @@ $(function() {
             loadingScreen = null;
             loadingTweening = null;
             TweenMax.killTweensOf(loadingDivText);
-            Global.rn_gameEvent_rn.emit('gameStart');
+            Global.rn_gameEvent_rn.emit(Global.rn_gameEventName_rn.rn_gameStart_rn);
             gameEngine.rn_start_rn();
             animate();
           });

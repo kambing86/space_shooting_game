@@ -1,6 +1,8 @@
 const PIXI = require('PIXI');
 
 const Global = require('../Global');
+const gameEvent = Global.rn_gameEvent_rn;
+const gameEventName = Global.rn_gameEventName_rn;
 const Extends = require('../util').rn_extends_rn;
 const Collision = require('../Collision');
 const Assets = require('./Assets');
@@ -50,11 +52,11 @@ function Rock(textureName, texture) {
       that.rn_life_rn--;
       if (that.rn_life_rn > 0) return;
       that.visible = false;
-      Global.rn_gameEvent_rn.emit('explosion', that.x, that.y, that.isBig);
+      gameEvent.emit(gameEventName.rn_explosion_rn, that.x, that.y, that.isBig);
       if (that.isBig)
-        Global.rn_gameEvent_rn.emit('score', 30);
+        gameEvent.emit(gameEventName.rn_score_rn, 30);
       else
-        Global.rn_gameEvent_rn.emit('score', 10);
+        gameEvent.emit(gameEventName.rn_score_rn, 10);
     }
   };
 }

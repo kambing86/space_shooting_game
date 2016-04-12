@@ -1,6 +1,8 @@
 const PIXI = require('PIXI');
 
 const Global = require('../Global');
+const gameEvent = Global.rn_gameEvent_rn;
+const gameEventName = Global.rn_gameEventName_rn;
 const Extends = require('../util').rn_extends_rn;
 const Collision = require('../Collision');
 const Assets = require('./Assets');
@@ -41,12 +43,13 @@ function Bank(textureName, texture) {
       that.rn_life_rn--;
       if (that.rn_life_rn > 0) return;
       that.visible = false;
-      Global.rn_gameEvent_rn.emit('explosion', that.x, that.y, true);
+      gameEvent.emit(gameEventName.rn_explosion_rn, that.x, that.y, true);
       if (textureName == Assets.rn_dbs_rn.name)
-        Global.rn_gameEvent_rn.emit('resetscore');
+        gameEvent.emit(gameEventName.rn_resetscore_rn);
       else {
-        Global.rn_gameEvent_rn.emit('score', 50);
-        Global.rn_gameEvent_rn.emit('bonus');
+        var score = 50;
+        gameEvent.emit(gameEventName.rn_score_rn, score);
+        gameEvent.emit(gameEventName.rn_bonus_rn, score);
       }
     }
   };

@@ -47,16 +47,16 @@ module.exports = {
   rn_disappear_rn: function() {
     disappearEffect.play(0);
   },
-  rn_resetScore_rn: function() {
+  rn_resetScore_rn: function(score) {
     textDiv.css({
       color: "#e6262d"
-    }).html("Score Reset!!");
+    }).html("Score Reset!!" + "<br/>-" + score);
     effectTimeline.play(0);
   },
-  rn_bonusScore_rn: function() {
+  rn_bonusScore_rn: function(score) {
     textDiv.css({
       color: "#fff500"
-    }).html("Bonus Score!!");
+    }).html("Bonus Score!!" + "<br/>" + score);
     effectTimeline.play(0);
   }
 };

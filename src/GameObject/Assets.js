@@ -39,6 +39,34 @@ module.exports = {
     name: "uob",
     url: "uob.png"
   },
+  rn_paypal_rn: {
+    name: "paypal",
+    url: "paypal.png"
+  },
+  rn_stripe_rn: {
+    name: "stripe",
+    url: "stripe.png"
+  },
+  rn_square_rn: {
+    name: "square",
+    url: "square.png"
+  },
+  rn_alipay_rn: {
+    name: "alipay",
+    url: "alipay.png"
+  },
+  rn_apple_rn: {
+    name: "apple",
+    url: "apple.png"
+  },
+  rn_citi_rn: {
+    name: "citi",
+    url: "citi.png"
+  },
+  rn_ocbc_rn: {
+    name: "ocbc",
+    url: "ocbc.png"
+  },
   rn_spark_rn: {
     name: "spark",
     url: "spark.png"
