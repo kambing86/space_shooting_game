@@ -8,6 +8,8 @@ const gameEventName = Global.rn_gameEventName_rn;
 const Extends = require('../util').rn_extends_rn;
 const Collision = require('../Collision');
 
+var Input;
+
 function Plane(texture) {
   var that = this;
   PIXI.Sprite.call(that, texture);
@@ -67,7 +69,8 @@ function Plane(texture) {
   that.rn_init_rn = function() {
     that.anchor.x = that.anchor.y = 0.5;
     that.x = Global.rn_gameWidth_rn / 2;
-    Global.rn_Input_rn
+    Input = Global.rn_Input_rn;
+    Input
       .on('mousedown', onPointerDown)
       .on('touchstart', onPointerDown)
       .on('mouseup', onPointerUp)
@@ -94,7 +97,7 @@ function Plane(texture) {
         return;
     }
     if (stopped) return;
-    var moving = isDown;
+    var shooting = isDown;
     if (moveToPosition) {
       if (that.x != moveToPosition.x) {
         var moveToX = moveToPosition.x;
@@ -102,12 +105,11 @@ function Plane(texture) {
         that.x += (that.x < moveToX) ? distance : -distance;
       }
     } else {
-      var keyLeft = Global.rn_Input_rn.isDown(Global.rn_Input_rn.rn_KEY_LEFT_rn);
-      var keyRight = Global.rn_Input_rn.isDown(Global.rn_Input_rn.rn_KEY_RIGHT_rn);
-      if (keyLeft || keyRight) {
+      var keyLeft = Input.isDown(Input.rn_KEY_LEFT_rn);
+      var keyRight = Input.isDown(Input.rn_KEY_RIGHT_rn);
+      if (keyLeft || keyRight)
         that.x += (keyLeft ? -1 : 1) * speed * dt;
-        moving = true;
-      }
+      shooting = Input.isDown(Input.rn_KEY_SPACE_rn);
     }
 
     //check position
@@ -116,7 +118,7 @@ function Plane(texture) {
     else if (that.x < that.minX)
       that.x = that.minX;
 
-    if (moving)
+    if (shooting)
       gameEvent.emit(gameEventName.rn_shoot_rn, that.x, that.y);
 
     //check collision with rock

@@ -37,7 +37,6 @@ function GameEngine(stage) {
   var spawnSpark = false;
   var spark;
 
-  var levelSetup;
   var target = 0;
   var stopped = false;
 
@@ -63,6 +62,7 @@ function GameEngine(stage) {
 
   that.rn_init_rn = function() {
     var level = util.rn_getParameter_rn("level");
+    var levelSetup;
     if (level) levelSetup = LevelSetup[parseInt(level) - 1];
     if (!levelSetup) {
       $("body").detach();
@@ -119,10 +119,12 @@ function GameEngine(stage) {
     });
     gameEvent.once(gameEventName.rn_gameover_rn, function() {
       stopped = true;
-      if (currentScore >= target)
+      if (target && currentScore < target)
+        InGameText.rn_setText_rn("MISSION FAILED");
+      else if (target)
         InGameText.rn_setText_rn("MISSION SUCCESS");
       else
-        InGameText.rn_setText_rn("MISSION FAILED");
+        InGameText.rn_setText_rn("YOU SCORED<br/>" + currentScore);
       postMessage();
     });
 
@@ -133,7 +135,8 @@ function GameEngine(stage) {
   };
 
   that.rn_start_rn = function() {
-    InGameText.rn_setText_rn("Target<br/>" + target);
+    if (target)
+      InGameText.rn_setText_rn("Target<br/>" + target);
     plane.rn_start_rn();
     bankTick = lastTick = Date.now();
   };

@@ -4,6 +4,7 @@ const Global = require('../Global');
 const Extends = require('../util').rn_extends_rn;
 const Collision = require('../Collision');
 // const Assets = require('./Assets');
+const gameWidth = Global.rn_gameWidth_rn;
 
 function Spark(textures) {
   var that = this;
@@ -13,9 +14,12 @@ function Spark(textures) {
   var disappear = true;
 
   that.rn_refresh_rn = function() {
-    that.x = Global.rn_gameWidth_rn / 4 + (Math.random() * Global.rn_gameWidth_rn) / 2;
+    that.x = gameWidth / 4 + (Math.random() * gameWidth) / 2;
     that.y = -that.height;
-    that.rn_speedX_rn = (Math.random() * 1 - 0.5) * 50;
+    var randomX = Math.random() * 0.5;
+    if (that.x > gameWidth / 2)
+      randomX = -randomX;
+    that.rn_speedX_rn = randomX * 50;
     that.rn_speedY_rn = (1.5 + Math.random() * speedConstant) * 50;
   };
 

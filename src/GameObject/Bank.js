@@ -6,6 +6,7 @@ const gameEventName = Global.rn_gameEventName_rn;
 const Extends = require('../util').rn_extends_rn;
 const Collision = require('../Collision');
 const Assets = require('./Assets');
+const gameWidth = Global.rn_gameWidth_rn;
 
 function Bank(textureName, texture) {
   var that = this;
@@ -17,8 +18,11 @@ function Bank(textureName, texture) {
   var speedConstant = 1;
 
   that.rn_refresh_rn = function() {
-    that.x = Global.rn_gameWidth_rn / 4 + (Math.random() * Global.rn_gameWidth_rn) / 2;
+    that.x = gameWidth / 4 + (Math.random() * gameWidth) / 2;
     that.y = -that.height;
+    var randomX = Math.random() * 0.5;
+    if (that.x > gameWidth / 2)
+      randomX = -randomX;
     that.rn_speedX_rn = (Math.random() * 1 - 0.5) * 100;
     that.rn_speedY_rn = (1.5 + Math.random() * speedConstant) * 100;
     that.rn_life_rn = initialLife;

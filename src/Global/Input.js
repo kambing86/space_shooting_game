@@ -13,6 +13,7 @@ function Input(stage) {
   that.rn_KEY_UP_rn = 38;
   that.rn_KEY_RIGHT_rn = 39;
   that.rn_KEY_DOWN_rn = 40;
+  that.rn_KEY_SPACE_rn = 32;
 
   $(function() {
     $(window)
