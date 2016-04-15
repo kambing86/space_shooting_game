@@ -122,7 +122,7 @@ function GameEngine(stage) {
       if (target && currentScore < target)
         InGameText.rn_setText_rn("MISSION FAILED");
       else if (target)
-        InGameText.rn_setText_rn("MISSION SUCCESS");
+        InGameText.rn_setText_rn("MISSION SUCCESSFUL");
       else
         InGameText.rn_setText_rn("YOU SCORED<br/>" + currentScore);
       postMessage();

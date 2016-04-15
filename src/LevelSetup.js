@@ -20,21 +20,21 @@ module.exports = [{
   rn_target_rn: 1000,
   rn_text_rn: 'Level 3'
 }, {
-  rn_rocks_rn: 3,
+  rn_rocks_rn: 2.5,
   rn_dbs_rn: true,
   rn_banks_rn: true,
   rn_sparks_rn: true,
   rn_target_rn: 2000,
   rn_text_rn: 'Level 4'
 }, {
-  rn_rocks_rn: 3,
+  rn_rocks_rn: 2.5,
   rn_dbs_rn: true,
   rn_banks_rn: true,
   rn_sparks_rn: true,
   rn_target_rn: null,
   rn_text_rn: 'Level 5 Round 1'
 }, {
-  rn_rocks_rn: 3,
+  rn_rocks_rn: 2.5,
   rn_dbs_rn: true,
   rn_banks_rn: true,
   rn_sparks_rn: true,

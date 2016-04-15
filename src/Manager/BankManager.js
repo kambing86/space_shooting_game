@@ -9,6 +9,7 @@ var instance = null;
 function BankManager(gotDbs, gotBanks) {
   var that = this;
   var count = 1;
+  var spawned = 0;
 
   var bankNames = [];
   if (gotDbs)
@@ -59,6 +60,8 @@ function BankManager(gotDbs, gotBanks) {
     if (!totalNames) return;
     if (updates.length > totalNames * count) return;
     var name = bankNames.splice(Math.floor(Math.random() * totalNames), 1);
+    if (spawned == 3 && gotDbs && banks[Assets.rn_dbs_rn.name].length > 0)
+      name = Assets.rn_dbs_rn.name;
     totalNames--;
     var bank;
     while (!bank) {
@@ -68,6 +71,7 @@ function BankManager(gotDbs, gotBanks) {
       updates.push(bank);
       bank.visible = true;
     }
+    spawned++;
   }
 
   that.rn_init_rn = function() {};
