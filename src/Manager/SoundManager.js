@@ -40,7 +40,7 @@ function SoundManager() {
 
     for (var i in sounds)
       array.push({
-        id: i,
+        id: sounds[i],
         src: sounds[i] + ".mp3"
       });
 
