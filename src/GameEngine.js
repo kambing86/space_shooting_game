@@ -70,6 +70,7 @@ function GameEngine(stage) {
       return;
     }
     target = levelSetup.rn_target_rn;
+    timeLimit = levelSetup.rn_time_rn;
     spawnSpark = levelSetup.rn_sparks_rn;
 
     var resources = PIXI.loader.resources;

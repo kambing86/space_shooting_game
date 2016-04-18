@@ -104,12 +104,17 @@ $(function() {
       displayText += "Tap on screen to start";
       var totalTime = displayText.length * 0.05;
       var delay = loadingTweening.duration() * (1 - loadingTweening.progress());
-      TweenMax.to(loadingDivText, totalTime, {
+      var textAnim = TweenMax.to(loadingDivText, totalTime, {
         text: {
           value: displayText
         },
-        onComplete: function() {
+        onStart: function() {
           loadingScreen.on("click", function() {
+            textAnim.progress(1);
+          });
+        },
+        onComplete: function() {
+          loadingScreen.off("click").on("click", function() {
             loadingScreen.off("click");
             loadingScreen.detach();
             loadingScreen = null;
