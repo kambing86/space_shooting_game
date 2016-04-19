@@ -31,6 +31,15 @@ myDevConfig.debug = true;
 //     exec("/usr/bin/open -a '/Applications/Google Chrome.app' 'http://localhost:8080" + webPath + "'");
 //   }
 // });
+gulp.task("publish", function(callback) {
+  webpack(webpackConfig, function(err, stats) {
+    if (err) throw new gutil.PluginError("build", err);
+    gutil.log("build", stats.toString({
+      colors: true
+    }));
+    callback();
+  });
+});
 gulp.task("build", function(callback) {
   webpack(myDevConfig, function(err, stats) {
     if (err) throw new gutil.PluginError("build", err);
@@ -46,7 +55,8 @@ gulp.task("default", ["build"], function() {
   // myDevConfig.entry = "webpack-dev-server/client?http://localhost:8080" + myDevConfig.entry;
   var compiler = webpack(myDevConfig);
   new WebpackDevServer(compiler, {
-    // server and middleware options
+    // contentBase: __dirname + "/static"
+    // https: true
   }).listen(8080, "localhost", function(err) {
     if (err) throw new gutil.PluginError("[webpack-dev-server]", err);
     var serverUrl = "http://localhost:8080" + webPath;

@@ -2,7 +2,7 @@
   "name": "alien_shooting_game",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,6 +19,7 @@
     "gulp": "^3.9.1",
     "gulp-util": "^3.0.7",
     "inquirer": "^0.12.0",
+    "pidcrypt": "0.0.31",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.15",
     "webpack-dev-server": "^1.14.1"
