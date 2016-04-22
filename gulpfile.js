@@ -31,7 +31,7 @@ myDevConfig.debug = true;
 //     exec("/usr/bin/open -a '/Applications/Google Chrome.app' 'http://localhost:8080" + webPath + "'");
 //   }
 // });
-gulp.task("publish", function(callback) {
+gulp.task("build", function(callback) {
   webpack(webpackConfig, function(err, stats) {
     if (err) throw new gutil.PluginError("build", err);
     gutil.log("build", stats.toString({
@@ -40,18 +40,18 @@ gulp.task("publish", function(callback) {
     callback();
   });
 });
-gulp.task("build", function(callback) {
+gulp.task("dev-build", function(callback) {
   webpack(myDevConfig, function(err, stats) {
-    if (err) throw new gutil.PluginError("build", err);
-    gutil.log("build", stats.toString({
+    if (err) throw new gutil.PluginError("dev-build", err);
+    gutil.log("dev-build", stats.toString({
       colors: true
     }));
     callback();
   });
 });
-gulp.task("default", ["build"], function() {
+gulp.task("default", ["dev-build"], function() {
   const WebpackDevServer = require("webpack-dev-server");
-  gulp.watch(["src/**/*", "css/**/*"], ["build"]);
+  gulp.watch(["src/**/*", "css/**/*"], ["dev-build"]);
   // myDevConfig.entry = "webpack-dev-server/client?http://localhost:8080" + myDevConfig.entry;
   var compiler = webpack(myDevConfig);
   new WebpackDevServer(compiler, {
@@ -88,7 +88,7 @@ gulp.task("spritesheet", function(callback) {
   }, {
     name: "source",
     message: "image name"
-  }], function(answers) {
+  }]).then(function(answers) {
     var imageName = answers.source;
     var regex = /^(.+)(\..+)$/.exec(imageName);
     var name = regex[1];

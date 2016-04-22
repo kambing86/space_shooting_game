@@ -36,7 +36,7 @@ module.exports = [{
   rn_banks_rn: true,
   rn_sparks_rn: true,
   rn_target_rn: null,
-  rn_time_rn: 90,
+  rn_time_rn: 120,
   rn_text_rn: 'Level 5 Round 1'
 }, {
   rn_rocks_rn: 2.5,
@@ -44,6 +44,6 @@ module.exports = [{
   rn_banks_rn: true,
   rn_sparks_rn: true,
   rn_target_rn: null,
-  rn_time_rn: 90,
+  rn_time_rn: 120,
   rn_text_rn: 'Level 5 Round 2'
 }];
