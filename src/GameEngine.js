@@ -69,8 +69,8 @@ function GameEngine(stage) {
       alert("Please use correct link to play the game");
       return;
     }
-    target = levelSetup.rn_target_rn;
-    timeLimit = levelSetup.rn_time_rn;
+    target = levelSetup.rn_targetScore_rn;
+    timeLimit = levelSetup.rn_timeLimit_rn;
     spawnSpark = levelSetup.rn_sparks_rn;
 
     var resources = PIXI.loader.resources;

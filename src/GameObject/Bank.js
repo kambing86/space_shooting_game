@@ -20,9 +20,9 @@ function Bank(textureName, texture) {
   that.rn_refresh_rn = function() {
     that.x = gameWidth / 4 + (Math.random() * gameWidth) / 2;
     that.y = -that.height;
-    var randomX = Math.random() * 0.5;
-    if (that.x > gameWidth / 2)
-      randomX = -randomX;
+    // var randomX = Math.random() * 0.5;
+    // if (that.x > gameWidth / 2)
+    //   randomX = -randomX;
     that.rn_speedX_rn = (Math.random() * 1 - 0.5) * 100;
     that.rn_speedY_rn = (1.5 + Math.random() * speedConstant) * 100;
     that.rn_life_rn = initialLife;

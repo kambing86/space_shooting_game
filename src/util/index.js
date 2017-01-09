@@ -16,7 +16,10 @@ module.exports = {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   },
   rn_postMessage_rn: function(msg) {
-    if (parent)
-      parent.postMessage(msg, location.origin);
+    try {
+      if (parent) parent.postMessage(msg, location.origin);
+    } catch (e) {
+      console.error(e);
+    }
   }
 };

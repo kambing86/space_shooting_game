@@ -86,7 +86,7 @@ $(function() {
       if (!levelSetup) return;
 
       var loadingScreen = $(".loading");
-      var displayText = levelSetup.rn_text_rn + "<br/>";
+      var displayText = levelSetup.rn_introText_rn + "<br/>";
       if (parseInt(level) <= 2) {
         displayText += "Destroy all oncoming asteroids<br/>";
         if (levelSetup.rn_banks_rn)
